@@ -3,8 +3,19 @@ const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const allUsers = require(__dirname + '/public/json/user.json');
+const cors = require('cors');
+
+const headers  = {
+    "Accept": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "X-Requested-With": "XMLHttpRequest",
+    "Access-Control-Allow-Methods" : "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+};
+
 
 const parser = bodyParser.urlencoded({extended: false});
+app.use(cors());
 
 app.get('/users', async (req, res) => {
     let userId = req.query.userId;
@@ -19,7 +30,6 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
     if (!req.body) {
         res.sendStatus(400);
     }

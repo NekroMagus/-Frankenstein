@@ -3,9 +3,8 @@ const app = express();
 const fs = require('fs');
 
 app.get('/json', (req, res) => {
-    fs.readFile(__dirname + "/package.json", "utf8", (err, data) => {
-        res.status(200);
-        res.type('text/plain');
+    fs.readFile(__dirname + "/package.json", "utf-8", (err, data) => {
+        res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin' : 'http://localhost:3000/json'});
         res.end(data);
     });
 });

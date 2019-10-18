@@ -3,7 +3,7 @@ const app = express();
 const fs = require('fs');
 
 app.get('/json', (req, res) => {
-    fs.readFile(__dirname + "/package.json", "utf-8", (err, data) => {
+    fs.readFile(__dirname +'/public/json'+ "/user.json", "utf-8", (err, data) => {
         res.writeHead(200, {'Content-Type': 'text/json', 'Access-Control-Allow-Origin' : '*'});
         res.end(data);
     });

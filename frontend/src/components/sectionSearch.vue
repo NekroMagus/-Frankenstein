@@ -32,12 +32,12 @@ export default {
   },
   methods: {
     getAllResults: function() {
-      axios.get("http://localhost:3000/json").then(response => {
+      axios.get("http://localhost:3000/users").then(response => {
         this.searchedResult = response.data;
       });
     },
     getResultsById: function() {
-      axios.get("http://localhost:3000/json/getuser", {params: {userId: this.searchedUserId }}).then(response => {
+      axios.get("http://localhost:3000/users", {params: {userId: this.searchedUserId }}).then(response => {
         this.searchedResult = response.data;
         console.log(this.searchedResult);
       });

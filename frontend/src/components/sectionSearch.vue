@@ -1,11 +1,11 @@
 <template>
   <div>
     <hr />
-    <input v-bind="searchedUserId" type="text" placeholder="userid" size="5" />
-    <input v-bind="currentTitle" type="text" placeholder="title" size="50" />
+    <input v-model="searchedUserId" type="text" placeholder="userid" size="5" />
+    <input v-model="currentTitle" type="text" placeholder="title" size="50" />
     <input @click="postComment" type="submit" value="post comment" />
     <br />
-    <textarea v-bind="currentBody" type="text" placeholder="body" rows="7"></textarea>
+    <textarea v-model="currentBody" type="text" placeholder="body" rows="7"></textarea>
 
     <hr />
     <input type="submit" @click="getAllResults" value="search all users" />

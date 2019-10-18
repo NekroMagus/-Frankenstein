@@ -9,8 +9,13 @@ app.get('/json', (req, res) => {
     });
 });
 
+app.get('/json/getuser', (req, res) => {
+    let id;
+});
+
 const server = app.listen(3000, () => {
     let host = server.address().address;
     let port = server.address().port;
-    console.log("http://localhost:" + port);
+    console.log("http://localhost:" + port + "/json");
 });
+

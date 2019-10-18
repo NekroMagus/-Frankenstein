@@ -18,7 +18,7 @@ app.get('/json/getuser', (req, res) => {
     }catch(e) {
         data =users;
     }
-    let userId = users.filter(item => item.userId === req.param.userId);
+    let userId = users.filter(item => +item.userId === +req.param.userId);
     res.end(JSON.stringify(userId));
 });
 

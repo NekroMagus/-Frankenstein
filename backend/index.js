@@ -19,6 +19,7 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
     if (!req.body) {
         res.sendStatus(400);
     }
@@ -26,10 +27,9 @@ app.post('/users', parser, async (req, res) => {
     allUsers.map(item => {
         maxId = Math.max(item.id, maxId);
     });
-    maxId++;
     let user = {};
     user.userId = req.body.userId;
-    user.id = maxId;
+    user.id = ++maxId;
     allUsers.push(user);
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if(err) throw err;

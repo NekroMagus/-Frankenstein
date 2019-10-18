@@ -5,7 +5,7 @@ const allUsers = require(__dirname + '/public/json/user.json');
 
 app.get('/users', async (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
-    if (req.query.userId === undefined) {
+    if (req.query.userId === undefined || req.query.userId === null) {
         res.end(JSON.stringify(allUsers));
     }
     let user = allUsers.filter(item => +item.userId === +req.query.userId);
@@ -13,7 +13,6 @@ app.get('/users', async (req, res) => {
 });
 
 const server = app.listen(3000, () => {
-    let host = server.address().address;
     let port = server.address().port;
     console.log("http://localhost:" + port + "/user");
 });

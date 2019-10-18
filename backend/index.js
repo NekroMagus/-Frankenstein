@@ -5,7 +5,7 @@ const fs = require('fs');
 const allUsers = require(__dirname + '/public/json/user.json');
 const cors = require('cors');
 
-const parser = bodyParser.urlencoded({extended: false});
+const parser = bodyParser.urlencoded({extended: true});
 app.use(cors());
 
 app.get('/users', async (req, res) => {
@@ -29,7 +29,7 @@ app.post('/users', parser, async (req, res) => {
         maxId = Math.max(item.id, maxId);
     });
     let user = {};
-    user.userId = req.body.userId;
+    user = req.body;
     user.id = ++maxId;
     allUsers.push(user);
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {

@@ -62,7 +62,7 @@ export default {
     },
     postComment: function() {
       axios
-        .post("http://localhost:3000/users", { userId: 0, id: b, title: c, body: d })
+        .post("http://localhost:3000/users", { userId: this.searchedUserId, title: this.currentTitle, body: this.currentBody })
         .then(response => {
           console.log(response);
         });

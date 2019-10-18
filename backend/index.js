@@ -5,12 +5,6 @@ const allUsers = require(__dirname + '/public/json/user.json');
 
 app.get('/users', async (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
-    let data = null;
-    try {
-        data = JSON.parse(allUsers);
-    } catch (e) {
-        data = allUsers;
-    }
     if (req.query.userId === undefined) {
         res.end(JSON.stringify(allUsers));
     }

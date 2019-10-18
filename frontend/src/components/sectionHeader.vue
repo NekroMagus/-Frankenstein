@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import backgroundUrl from '../assets/images/frankenstein.jpg'
+import backgroundUrl from '../assets/images/frankenstein.png'
 export default {
   data() {
     return {

@@ -16,7 +16,7 @@ export default {
   methods: {
     getSerchResult: function() {
       axios.get("http://localhost:3000/json").then(response => {
-        this.info = response;
+        this.info = response.data;
         console.log(this.info);
       });
     }

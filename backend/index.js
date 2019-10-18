@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const fs = require('fs');
 const allUsers = require(__dirname + '/public/json/user.json');
+
+const parser = bodyParser.urlencoded({extended: false});
 
 app.get('/users', async (req, res) => {
     let userId = req.query.userId;
@@ -13,6 +16,21 @@ app.get('/users', async (req, res) => {
         res.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*'});
         res.end(JSON.stringify(allUsers));
     }
+});
+
+app.post('/users', parser, async (req, res) => {
+    if (!req.body) {
+        res.sendStatus(400);
+    }
+    allUsers.push(req.body);
+});
+
+app.put('/users', async (req, res) => {
+
+});
+
+app.delete('/users', async (req, res) => {
+
 });
 
 const server = app.listen(3000, () => {

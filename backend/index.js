@@ -22,7 +22,18 @@ app.post('/users', parser, async (req, res) => {
     if (!req.body) {
         res.sendStatus(400);
     }
-    allUsers.push(req.body);
+    let maxId = 0;
+    allUsers.map(item => {
+        maxId = Math.max(item.id, maxId);
+    });
+    maxId++;
+    let user = {};
+    user.userId = req.body.userId;
+    user.id = maxId;
+    allUsers.push(user);
+    fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
+        if(err) throw err;
+    }));
 });
 
 app.put('/users', async (req, res) => {

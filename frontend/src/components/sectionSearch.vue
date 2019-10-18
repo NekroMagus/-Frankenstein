@@ -38,7 +38,7 @@ export default {
     },
     getResultsById: function() {
       axios.get("http://localhost:3000/json/getuser", {params: {userId: this.searchedUserId }}).then(response => {
-        this.searchedResult = response;
+        this.searchedResult = response.data;
         console.log(this.searchedResult);
       });
     }

@@ -15,7 +15,8 @@ export default {
 
 <style scoped>
 .header {
-  height: 400px;
+  height: 500px;
   background-repeat: no-repeat;
+  background-position: center top;
 }
 </style>

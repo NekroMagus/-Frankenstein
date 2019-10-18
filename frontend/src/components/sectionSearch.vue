@@ -11,7 +11,7 @@
         placeholder="enter user id"
       />
       <input type="submit" @click="getResultsById" value="search by id" />
-    <div class="search-result d-flex align-items-center">
+    <div class="search-result">
       <div class="search-result__item rounded" v-for="(item, index) in searchedResult" v-bind:key="index">
         <span class="search-result__userId">Id: {{ item.id }}</span>
         <span class="search-result__title">title: {{ item.title }}</span>

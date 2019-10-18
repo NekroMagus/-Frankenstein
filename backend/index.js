@@ -28,8 +28,7 @@ app.post('/users', parser, async (req, res) => {
     allUsers.map(item => {
         maxId = Math.max(item.id, maxId);
     });
-    let user = {};
-    user = req.body;
+    let user = req.body;
     user.id = ++maxId;
     allUsers.push(user);
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {

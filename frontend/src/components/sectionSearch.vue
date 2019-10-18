@@ -3,7 +3,6 @@
     <hr />
     <input type="submit" @click="getAllResults" value="search all users" />
     <hr />
-    <form method="get" action="/json/getuser">
       <input
         type="search"
         name="userId"
@@ -12,7 +11,6 @@
         placeholder="enter user id"
       />
       <input type="submit" @click="getResultsById" value="search by id" />
-    </form>
     <div class="search-result">
       <div class="search-result__item rounded" v-for="(item, index) in searchedResult" v-bind:key="index">
         <span class="search-result__userId">Id: {{ item.id }}</span>

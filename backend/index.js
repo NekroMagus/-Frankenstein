@@ -4,6 +4,8 @@ const fs = require('fs');
 
 app.get('/json', (req, res) => {
     fs.readFile(__dirname + "/package.json", "utf8", (err, data) => {
+        res.status(200);
+        res.type('text/plain');
         res.end(data);
     });
 });

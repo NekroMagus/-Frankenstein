@@ -66,20 +66,8 @@ export default {
         title: this.currentTitle,
         body: this.currentBody
       };
-      console.log(obj);
 
-      axios
-        .post("http://localhost:3000/users", obj);
-
-      // axios({
-      //   method: "post",
-      //   url: "http://localhost:3000/users",
-      //   data: {
-      //     fuserId: this.searchedUserId,
-      //     title: this.currentTitle,
-      //     body: this.currentBody
-      //   }
-      // });
+      axios.post("http://localhost:3000/users", obj);
     }
   }
 };

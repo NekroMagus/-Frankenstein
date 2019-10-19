@@ -21,6 +21,7 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
+    console.log(req.body);
     if (!req.body) {
         res.sendStatus(400);
     }

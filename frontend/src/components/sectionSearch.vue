@@ -1,11 +1,11 @@
 <template>
   <div>
     <hr />
-    <input v-model="searchedUserId" type="text" placeholder="userid" size="5" />
-    <input v-model="currentTitle" type="text" placeholder="title" size="50" />
+    <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
+    <input v-model="currentTitle" name="title" type="text" placeholder="title" size="50" />
     <input @click="postComment" type="submit" value="post comment" />
     <br />
-    <textarea v-model="currentBody" type="text" placeholder="body" rows="7"></textarea>
+    <textarea v-model="currentBody" name="body" type="text" placeholder="body" rows="7"></textarea>
 
     <hr />
     <input type="submit" @click="getAllResults" value="search all users" />
@@ -41,8 +41,8 @@ export default {
     return {
       searchedResult: [],
       searchedUserId: null,
-      currentTitle: '',
-      currentBody: ''
+      currentTitle: "",
+      currentBody: ""
     };
   },
   methods: {
@@ -61,11 +61,24 @@ export default {
         });
     },
     postComment: function() {
-      axios
-        .post("http://localhost:3000/users", { userId: this.searchedUserId, title: this.currentTitle, body: this.currentBody })
-        .then(response => {
-          console.log(response);
-        });
+      let obj = {
+        userId: this.searchedUserId,
+        title: this.currentTitle,
+        body: this.currentBody
+      };
+      console.log(obj);
+
+      // axios.post("http://localhost:3000/users", obj);
+
+      axios({
+        method: "post",
+        url: "http://localhost:3000/users",
+        data: {
+          fuserId: this.searchedUserId,
+          title: this.currentTitle,
+          body: this.currentBody
+        }
+      });
     }
   }
 };

@@ -5,7 +5,7 @@ const fs = require('fs');
 const allUsers = require(__dirname + '/public/json/user.json');
 const cors = require('cors');
 
-const parser = bodyParser.urlencoded({extended: true});
+const parser = bodyParser.json();
 app.use(cors());
 
 app.get('/users', async (req, res) => {

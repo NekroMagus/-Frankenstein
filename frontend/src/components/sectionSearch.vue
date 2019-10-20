@@ -1,6 +1,7 @@
 <template>
   <div>
     <hr />
+
     <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
     <input v-model="currentTitle" name="title" type="text" placeholder="title" size="50" />
     <input @click="postComment" type="submit" value="post comment" />
@@ -8,7 +9,9 @@
     <textarea v-model="currentBody" name="body" type="text" placeholder="body" rows="7"></textarea>
 
     <hr />
+
     <input type="submit" @click="getAllResults" value="search all users" />
+
     <hr />
 
     <input
@@ -20,16 +23,22 @@
     />
     <input type="submit" @click="getResultsById" value="search by id" />
 
+    <hr>
+
     <div class="search-result">
       <div
         class="search-result__item rounded"
         v-for="(item, index) in searchedResult"
         v-bind:key="index"
       >
-        <span class="search-result__userId">Id: {{ item.id }}</span>
+        <span class="search-result__Id">Id: {{ item.id }}</span>
         <span class="search-result__title">title: {{ item.title }}</span>
-        <p class="search-result__body">{{ item.body }}</p>
-        <p class="search-result__user-id">userId: {{item.userId}}</p>
+        <br>
+        <textarea class="search-result__body" type="text" :value="`${item.body}`" rows="5"></textarea>
+        <div class="search_item-footer">
+          <button>Put changes</button>
+          <span class="search-result__user-id">userId: {{item.userId}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -85,7 +94,7 @@ export default {
   transform: scale(1.1);
 }
 
-.search-result__userId {
+.search-result__Id {
   background-color: cornflowerblue;
   color: white;
   padding: 2px 4px;
@@ -94,12 +103,19 @@ export default {
   padding-left: 15px;
   font-weight: 600;
 }
-
+.search_item-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+}
 .search-result__user-id {
-  text-align: right;
-  padding-right: 9px;
+  padding: 0 9px;
   font-style: italic;
 }
+
+/* .search-result__body {
+  width: 100%;
+} */
 
 textarea {
   width: 100%;

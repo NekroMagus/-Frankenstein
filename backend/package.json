@@ -1,5 +1,8 @@
 {
   "name": "backend",
+  "description": "A Node.js project",
+  "author": "Igor Fliginskikh",
+  "license": "MIT",
   "version": "1.0.0",
   "dependencies": {
     "body-parser": "^1.19.0",

@@ -26,7 +26,7 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
-    if(!req.body) return res.sendStatus(400);
+    if (!req.body) return res.sendStatus(400);
     allUsers.push(createUser(req.body));
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
@@ -51,10 +51,12 @@ app.put('/users', async (req, res) => {
 
 app.delete('/users', async (req, res) => {
     let userIndex = findIndexUserById(req.query.id);
-    allUsers.splice(userIndex,1);
-    fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
-        if (err) throw err;
-    }));
+    if (+userIndex !== -1) {
+        allUsers.splice(userIndex, 1);
+        fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
+            if (err) throw err;
+        }));
+    }
 });
 
 const server = app.listen(3000, () => {

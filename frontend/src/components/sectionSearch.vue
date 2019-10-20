@@ -41,21 +41,28 @@
         <span class="search-result__title">title: {{ item.title }}</span>
         <br />
         <p class="search-result__body">{{item.body}}</p>
-        <!-- <textarea v-if="searchedResult.length===1" v-model="selectedItem.body" rows="5"></textarea> -->
         <div class="search_item-footer">
           <button @click="deleteComment(item.id)">Delete</button>
-          <button @click="showModal = true">Edit</button>
+          <button @click="isVisibleModalEdit = true">Edit</button>
           <span class="search-result__user-id">userId: {{item.userId}}</span>
         </div>
       </div>
-      <!-- modal -->
-      <modal-window :data="selectedItem"></modal-window>
     </div>
+
+    <!-- modals -->
+    <modal-window
+      v-on:close="isVisibleModalEdit=false"
+      :data="selectedItem"
+      :visibility="isVisibleModalEdit"
+    ></modal-window>
+
+    <modal-message :visibility="isVisibleModalMessage" :message="modalMessage"></modal-message>
   </div>
 </template>
 
 <script>
 import modalWindow from "./modal.vue";
+import modalMessage from "./modalMessage";
 
 export default {
   data() {
@@ -68,7 +75,9 @@ export default {
       selectedItem: {},
       editableTitle: "",
       editableBody: "",
-      showModal: false
+      isVisibleModalEdit: false,
+      isVisibleModalMessage: true,
+      modalMessage: ""
     };
   },
   methods: {
@@ -93,6 +102,9 @@ export default {
         })
         .then(response => {
           this.searchedResult = response.data;
+        })
+        .then(response => {
+          console.log(response.data);
         });
     },
     postComment: function() {
@@ -102,17 +114,28 @@ export default {
         body: this.postedBody
       };
 
-      axios.post("http://localhost:3000/users", obj);
+      axios
+        .post("http://localhost:3000/users", obj)
+        .then(response => {
+          console.log('response');
+        })
+        .catch(function(error) {
+          console.log('oshibka');
+          
+          // this.modalMessage = "ОШИБКА";
+        });
     },
     deleteComment: function(ind) {
-      axios.delete("http://localhost:3000/users", {
+      console.log(ind);
+
+      axios
+        .delete("http://localhost:3000/users", {
           params: { id: ind }
         })
         .then(response => {
           console.log(response.data);
         });
     }
-    
   },
   watch: {
     showModal: function() {
@@ -120,7 +143,8 @@ export default {
     }
   },
   components: {
-    modalWindow
+    modalWindow,
+    modalMessage
   }
 };
 </script>

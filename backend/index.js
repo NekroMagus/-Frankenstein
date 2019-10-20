@@ -10,8 +10,13 @@ app.use(cors());
 
 app.get('/users', async (req, res) => {
     let userId = req.query.userId;
+    let id = req.query.id;
     if (Number.isInteger(+userId)) {
         let users = allUsers.filter(item => +item.userId === +req.query.userId);
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end(JSON.stringify(users));
+    } else if (Number.isInteger(+id)) {
+        let users = allUsers.filter(item => +item.id === +req.query.id);
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end(JSON.stringify(users));
     } else {
@@ -29,6 +34,7 @@ app.post('/users', parser, async (req, res) => {
 
 app.put('/users', async (req, res) => {
     let id = req.body.id;
+    if (id === null) return;
     let newUser = req.body;
     let oldUser = allUsers.find(x => x.id === id);
     if (oldUser === null) {
@@ -62,4 +68,11 @@ function createUser(data) {
     user.title = data.title;
     user.body = data.body;
     return user;
+}
+
+function findUser(id) {
+    let user = allUsers.find(x => x.id === id);
+    if (user === null) {
+        return;
+    }
 }

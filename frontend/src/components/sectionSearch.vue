@@ -1,6 +1,7 @@
 <template>
   <div>
     <hr />
+    <button @click="showModalMessage">test button</button>
     <!-- post comment -->
     <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
     <input v-model="postedTitle" name="title" type="text" placeholder="title" size="50" />
@@ -117,11 +118,10 @@ export default {
       axios
         .post("http://localhost:3000/users", obj)
         .then(response => {
-          console.log('response');
+          console.log("response");
         })
         .catch(function(error) {
-          console.log('oshibka');
-          
+          console.log("oshibka");
           // this.modalMessage = "ОШИБКА";
         });
     },
@@ -135,6 +135,10 @@ export default {
         .then(response => {
           console.log(response.data);
         });
+    },
+    showModalMessage: function() {
+      console.log(modalMessage);
+      this.isVisibleModalMessage = true;
     }
   },
   watch: {

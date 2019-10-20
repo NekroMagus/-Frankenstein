@@ -28,21 +28,25 @@ app.get('/users', async (req, res) => {
 app.post('/users', parser, async (req, res) => {
     if (!req.body) return res.sendStatus(400);
     if (findTitle(req.body.title) !== undefined) {
-        res.error();
-        return;
+        return res.status(400).send({
+            error: "The title is repeated"
+        });
     }
     allUsers.push(createUser(req.body));
     fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
     }));
-    res.end('Successful post');
+    res.status(201).send({
+        message: "Post successful"
+    });
 });
 
 app.put('/users', parser, async (req, res) => {
     let id = req.body.id;
     if (id === null) {
-        res.error();
-        return;
+        return res.status(400).send({
+            error: "Cannot found post with id: " + req.body.id
+        });
     }
     let userIndex = findIndexUserById(id);
     allUsers[userIndex].title = req.body.title;
@@ -60,9 +64,13 @@ app.delete('/users', async (req, res) => {
         fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
             if (err) throw err;
         }));
-        res.status(200);
+        return res.status(200).send({
+            message: "Successful deleted"
+        });
     } else {
-        res.error();
+        return res.status(404).send({
+            error: "User not found"
+        });
     }
 });
 

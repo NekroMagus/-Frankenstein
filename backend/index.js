@@ -26,6 +26,7 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
+    if (!req.body) return res.sendStatus(400);
     allUsers.push(createUser(req.body));
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
@@ -36,20 +37,29 @@ app.put('/users', async (req, res) => {
     let id = req.body.id;
     if (id === null) return;
     let newUser = req.body;
-    let oldUser = allUsers.find(x => x.id === id);
+    let oldUser = findUserById(id);
     if (oldUser === null) {
-        return;
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('id not found');
     }
     oldUser.title = newUser.title;
     oldUser.body = newUser.body;
     allUsers.push(oldUser);
-    fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
+    fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
     }));
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Successful');
 });
 
 app.delete('/users', async (req, res) => {
-
+    let userIndex = findIndexUserById(req.query.id);
+    if (+userIndex !== -1) {
+        allUsers.splice(userIndex, 1);
+        fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
+            if (err) throw err;
+        }));
+    }
 });
 
 const server = app.listen(3000, () => {
@@ -70,9 +80,12 @@ function createUser(data) {
     return user;
 }
 
-function findUser(id) {
+function findUserById(id) {
     let user = allUsers.find(x => x.id === id);
-    if (user === null) {
-        return;
-    }
+    return user;
+}
+
+function findIndexUserById(id) {
+    let index = allUsers.findIndex(item => item.id === id);
+    return index;
 }

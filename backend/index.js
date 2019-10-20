@@ -27,7 +27,7 @@ app.get('/users', async (req, res) => {
 
 app.post('/users', parser, async (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    if (findTitle() !== null) {
+    if (findTitle(req.body.title) !== undefined) {
         res.error();
         return;
     }
@@ -93,5 +93,5 @@ function findIndexUserById(id) {
 }
 
 function findTitle(title) {
-    return allUsers.find(item => item === title);
+    return allUsers.find(item => item.title === title);
 }

@@ -33,7 +33,7 @@ app.post('/users', parser, async (req, res) => {
     }));
 });
 
-app.put('/users', async (req, res) => {
+app.put('/users', parser, async (req, res) => {
     let id = req.body.id;
     if (id === null) return;
     let newUser = req.body;

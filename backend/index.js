@@ -21,18 +21,9 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
-    if (!req.body) {
-        res.sendStatus(400);
-    }
-    let maxId = 0;
-    allUsers.map(item => {
-        maxId = Math.max(item.id, maxId);
-    });
-    let user = req.body;
-    user.id = ++maxId;
-    allUsers.push(user);
+    allUsers.push(createUser(req.body));
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
-        if(err) throw err;
+        if (err) throw err;
     }));
 });
 
@@ -48,3 +39,16 @@ const server = app.listen(3000, () => {
     let port = server.address().port;
     console.log("http://localhost:" + port + "/users");
 });
+
+function createUser(data) {
+    let maxId = 0;
+    allUsers.map(item => {
+        maxId = Math.max(item.id, maxId);
+    });
+    let user = {};
+    user.userId = data.userId;
+    user.id = ++maxId;
+    user.title = data.title;
+    user.body = data.body;
+    return user;
+}

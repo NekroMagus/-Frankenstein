@@ -43,6 +43,7 @@
         <p class="search-result__body">{{item.body}}</p>
         <!-- <textarea v-if="searchedResult.length===1" v-model="selectedItem.body" rows="5"></textarea> -->
         <div class="search_item-footer">
+          <button @click="deleteComment(item.id)">Delete</button>
           <button @click="showModal = true">Edit</button>
           <span class="search-result__user-id">userId: {{item.userId}}</span>
         </div>
@@ -102,6 +103,14 @@ export default {
       };
 
       axios.post("http://localhost:3000/users", obj);
+    },
+    deleteComment: function(ind) {
+      axios.delete("http://localhost:3000/users", {
+          params: { id: ind }
+        })
+        .then(response => {
+          console.log(response.data);
+        });
     }
     
   },

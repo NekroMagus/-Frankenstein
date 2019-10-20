@@ -27,6 +27,10 @@ app.get('/users', async (req, res) => {
 
 app.post('/users', parser, async (req, res) => {
     if (!req.body) return res.sendStatus(400);
+    if (findTitle() !== null) {
+        res.error();
+        return;
+    }
     allUsers.push(createUser(req.body));
     fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
@@ -84,4 +88,8 @@ function findUserById(id) {
 
 function findIndexUserById(id) {
     return allUsers.findIndex(item => +item.id === +id);
+}
+
+function findTitle(title) {
+    return allUsers.find(item => item === title);
 }

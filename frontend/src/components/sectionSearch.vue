@@ -105,6 +105,8 @@ export default {
       axios.post("http://localhost:3000/users", obj);
     },
     deleteComment: function(ind) {
+      console.log(ind);
+      
       axios.delete("http://localhost:3000/users", {
           params: { id: ind }
         })

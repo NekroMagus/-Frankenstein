@@ -56,7 +56,7 @@
       :visibility="isVisibleModalEdit"
     ></modal-window>
 
-    <modal-message></modal-message>
+    <modal-message :visibility="isVisibleModalMessage" :message="modalMessage"></modal-message>
   </div>
 </template>
 
@@ -75,7 +75,9 @@ export default {
       selectedItem: {},
       editableTitle: "",
       editableBody: "",
-      isVisibleModalEdit: false
+      isVisibleModalEdit: false,
+      isVisibleModalMessage: true,
+      modalMessage: ""
     };
   },
   methods: {
@@ -112,9 +114,16 @@ export default {
         body: this.postedBody
       };
 
-      axios.post("http://localhost:3000/users", obj).then(response => {
-        console.log(response.data);
-      });
+      axios
+        .post("http://localhost:3000/users", obj)
+        .then(response => {
+          console.log('response');
+        })
+        .catch(function(error) {
+          console.log('oshibka');
+          
+          // this.modalMessage = "ОШИБКА";
+        });
     },
     deleteComment: function(ind) {
       console.log(ind);

@@ -35,16 +35,13 @@ app.post('/users', parser, async (req, res) => {
 
 app.put('/users', parser, async (req, res) => {
     let id = req.body.id;
-    if (id === null) return;
-    let newUser = req.body;
-    let oldUser = findUserById(id);
-    if (oldUser === null) {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end('id not found');
+    if (id === null) {
+        return "Not found";
     }
-    oldUser.title = newUser.title;
-    oldUser.body = newUser.body;
-    allUsers.push(oldUser);
+    let newUser = req.body;
+    let oldUserIndex = findIndexUserById(id);
+    allUsers[oldUserIndex].title = req.body.title;
+    allUsers[oldUserIndex].body = req.body.body;
     fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
     }));

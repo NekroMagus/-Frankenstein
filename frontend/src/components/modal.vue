@@ -23,12 +23,14 @@ export default {
         id: this.data.id,
         title: this.data.title,
         body: this.data.body,
-        userId: this.data.userId
+        // userId: this.data.userId
       };
       console.log(obj);
       
       // title, body, id
-      axios.put("http://localhost:3000/users", obj);
+      axios.put("http://localhost:3000/users", obj).then(response => {
+          console.log(response.data);
+        });;
     }
   }
 };

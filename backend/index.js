@@ -86,6 +86,6 @@ function findUserById(id) {
 }
 
 function findIndexUserById(id) {
-    let index = allUsers.findIndex(item => item.id === id);
+    let index = allUsers.findIndex(item => +item.id === +id);
     return index;
 }

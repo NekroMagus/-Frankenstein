@@ -1,13 +1,15 @@
 <template>
   <div class="modalWindow" v-if="visibility">
-    <span class="search-result__Id">Id: {{ data.id }}</span>
-    <span class="search-result__title">title: {{ data.title }}</span>
-    <br />
-    <textarea v-model="data.body"></textarea>
-    <div class="search_item-footer">
-      <button @click="putChanges">Put</button>
-      <button @click="$emit('close')">Close</button>
-      <span class="search-result__user-id">userId: {{data.userId}}</span>
+    <div class="container">
+      <span class="search-result__Id">Id: {{ data.id }}</span>
+      <span class="modal__title">title: {{ data.title }}</span>
+      <br />
+      <textarea v-model="data.body"></textarea>
+      <div class="search_item-footer">
+        <button @click="putChanges">Put</button>
+        <button @click="$emit('close')">Close</button>
+        <span class="search-result__user-id">userId: {{data.userId}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -18,9 +20,9 @@ export default {
     return {};
   },
   props: {
-      data: {}, 
-      visibility: Boolean
-      },
+    data: {},
+    visibility: Boolean
+  },
   methods: {
     putChanges: function() {
       let obj = {
@@ -38,17 +40,22 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .modalWindow {
   width: 100%;
   /* height: 50%; */
   position: fixed;
   left: 0;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
-  textarea {
-      height: 200px;
-  }
-
+textarea {
+  height: 200px;
+  padding: 9px;
+}
+.modal__title {
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 0 5px black;
+}
 </style>

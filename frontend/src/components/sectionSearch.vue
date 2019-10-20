@@ -1,19 +1,19 @@
 <template>
   <div>
     <hr />
-
+  <!-- post comment -->
     <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
-    <input v-model="currentTitle" name="title" type="text" placeholder="title" size="50" />
+    <input v-model="postedTitle" name="title" type="text" placeholder="title" size="50" />
     <input @click="postComment" type="submit" value="post comment" />
     <br />
-    <textarea v-model="currentBody" name="body" type="text" placeholder="body" rows="7"></textarea>
+    <textarea v-model="postedBody" name="body" type="text" placeholder="body" rows="7"></textarea>
 
     <hr />
-
+<!-- searc all users -->
     <input type="submit" @click="getAllResults" value="search all users" />
 
     <hr />
-
+<!-- search by user id -->
     <input
       type="search"
       name="userId"
@@ -21,25 +21,39 @@
       size="10"
       placeholder="enter user id"
     />
-    <input type="submit" @click="getResultsById" value="search by id" />
+    <input type="submit" @click="getResultsByUserId" value="search by userId" />
 
-    <hr>
+    <hr />
+<!-- search by id -->
+    <input
+      type="search"
+      name="Id"
+      v-model="searchedId"
+      size="10"
+      placeholder="enter id"
+    />
+    <input type="submit" @click="getResultsById" value="search by Id" />
 
+    <hr />
+<!-- show searc result -->
     <div class="search-result">
+
       <div
         class="search-result__item rounded"
         v-for="(item, index) in searchedResult"
         v-bind:key="index"
+        @click="selectedCommentId=item.id"
       >
         <span class="search-result__Id">Id: {{ item.id }}</span>
         <span class="search-result__title">title: {{ item.title }}</span>
-        <br>
+        <br />
         <textarea class="search-result__body" type="text" :value="`${item.body}`" rows="5"></textarea>
         <div class="search_item-footer">
-          <button>Put changes</button>
+          <button @click="putChanges">Put changes</button>
           <span class="search-result__user-id">userId: {{item.userId}}</span>
         </div>
       </div>
+      
     </div>
   </div>
 </template>
@@ -49,9 +63,13 @@ export default {
   data() {
     return {
       searchedResult: [],
+      searchedId: null,
       searchedUserId: null,
-      currentTitle: "",
-      currentBody: ""
+      postedTitle: "",
+      postedBody: "",
+      selectedCommentId: null,
+      editableTitle: '',
+      editableBody: ''
     };
   },
   methods: {
@@ -63,6 +81,15 @@ export default {
     getResultsById: function() {
       axios
         .get("http://localhost:3000/users", {
+          params: { userId: this.searchedId }
+        })
+        .then(response => {
+          this.searchedResult = response.data;
+        });
+    },
+    getResultsByUserId: function() {
+      axios
+        .get("http://localhost:3000/users", {
           params: { userId: this.searchedUserId }
         })
         .then(response => {
@@ -72,11 +99,20 @@ export default {
     postComment: function() {
       let obj = {
         userId: this.searchedUserId,
-        title: this.currentTitle,
-        body: this.currentBody
+        title: this.postedTitle,
+        body: this.postedBody
       };
 
       axios.post("http://localhost:3000/users", obj);
+    },
+    putChanges: function() {
+      // title, body, id
+      axios.put("http://localhost:3000/users", )
+    }
+  },
+  watch: {
+    selectedCommentId: function() {
+      console.log(this.selectedCommentId);
     }
   }
 };

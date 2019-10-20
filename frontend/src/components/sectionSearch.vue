@@ -115,6 +115,8 @@ export default {
         body: this.postedBody
       };
 
+      let thisObj = this;
+
       axios
         .post("http://localhost:3000/users", obj)
         .then(response => {
@@ -122,7 +124,7 @@ export default {
         })
         .catch(function(error) {
           console.log("oshibka");
-          // this.modalMessage = "ОШИБКА";
+          thisObj.modalMessage = "ОШИБКА";
         });
     },
     deleteComment: function(ind) {

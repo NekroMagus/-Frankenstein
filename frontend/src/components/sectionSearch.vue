@@ -44,12 +44,12 @@
         <!-- <textarea v-if="searchedResult.length===1" v-model="selectedItem.body" rows="5"></textarea> -->
         <div class="search_item-footer">
           <button @click="deleteComment(item.id)">Delete</button>
-          <button @click="showModal = true">Edit</button>
+          <button @click="isVisibleModalEdit = true">Edit</button>
           <span class="search-result__user-id">userId: {{item.userId}}</span>
         </div>
       </div>
       <!-- modal -->
-      <modal-window :data="selectedItem"></modal-window>
+      <modal-window v-on:close="isVisibleModalEdit=false" :data="selectedItem" :visibility='isVisibleModalEdit'></modal-window>
     </div>
   </div>
 </template>
@@ -68,7 +68,7 @@ export default {
       selectedItem: {},
       editableTitle: "",
       editableBody: "",
-      showModal: false
+      isVisibleModalEdit: false
     };
   },
   methods: {

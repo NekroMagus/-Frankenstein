@@ -26,6 +26,7 @@ app.get('/users', async (req, res) => {
 });
 
 app.post('/users', parser, async (req, res) => {
+    if(!req.body) return res.sendStatus(400);
     allUsers.push(createUser(req.body));
     fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;

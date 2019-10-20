@@ -39,14 +39,17 @@ app.put('/users', async (req, res) => {
     let newUser = req.body;
     let oldUser = findUserById(id);
     if (oldUser === null) {
-        return;
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('id not found');
     }
     oldUser.title = newUser.title;
     oldUser.body = newUser.body;
     allUsers.push(oldUser);
-    fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
+    fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
     }));
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Successful');
 });
 
 app.delete('/users', async (req, res) => {

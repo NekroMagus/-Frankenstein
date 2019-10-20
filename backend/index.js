@@ -28,7 +28,18 @@ app.post('/users', parser, async (req, res) => {
 });
 
 app.put('/users', async (req, res) => {
-
+    let id = req.body.id;
+    let newUser = req.body;
+    let oldUser = allUsers.find(x => x.id === id);
+    if (oldUser === null) {
+        return;
+    }
+    oldUser.title = newUser.title;
+    oldUser.body = newUser.body;
+    allUsers.push(oldUser);
+    fs.writeFile(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
+        if (err) throw err;
+    }));
 });
 
 app.delete('/users', async (req, res) => {

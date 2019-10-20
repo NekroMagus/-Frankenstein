@@ -79,11 +79,9 @@ function createUser(data) {
 }
 
 function findUserById(id) {
-    let user = allUsers.find(x => x.id === id);
-    return user;
+    return allUsers.find(x => x.id === id);
 }
 
 function findIndexUserById(id) {
-    let index = allUsers.findIndex(item => +item.id === +id);
-    return index;
+    return allUsers.findIndex(item => +item.id === +id);
 }

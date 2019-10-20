@@ -41,7 +41,8 @@ app.post('/users', parser, async (req, res) => {
 app.put('/users', parser, async (req, res) => {
     let id = req.body.id;
     if (id === null) {
-        return "Not found";
+        res.error();
+        return;
     }
     let userIndex = findIndexUserById(id);
     allUsers[userIndex].title = req.body.title;
@@ -49,8 +50,7 @@ app.put('/users', parser, async (req, res) => {
     fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
         if (err) throw err;
     }));
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Successful put changes');
+    res.status(200);
 });
 
 app.delete('/users', async (req, res) => {
@@ -60,8 +60,10 @@ app.delete('/users', async (req, res) => {
         fs.writeFileSync(__dirname + '/public/json/user.json', JSON.stringify(allUsers), (err => {
             if (err) throw err;
         }));
+        res.status(200);
+    } else {
+        res.error();
     }
-    res.end('Successful deleted');
 });
 
 const server = app.listen(3000, () => {

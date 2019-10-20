@@ -123,8 +123,7 @@ export default {
           console.log("response");
         })
         .catch(function(error) {
-          console.log("oshibka");
-          thisObj.modalMessage = "ОШИБКА";
+          thisObj.modalMessage = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },
     deleteComment: function(ind) {

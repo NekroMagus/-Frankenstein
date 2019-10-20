@@ -20,7 +20,7 @@ export default {
     .modalMessage {
         position: fixed;
         background: #fff;
-        border: 1px solid #000;
+        border: 3px solid red;
         padding: 9px;
         left: 0;
         top: 0;

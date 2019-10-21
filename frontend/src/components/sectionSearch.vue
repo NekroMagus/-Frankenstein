@@ -10,12 +10,18 @@
     <hr />
     <search-number-bar
       v-on:mysubmit="getResultsByUserId"
+      v-on:error="showErrorMessage"
       placeholder="1"
       btncaption="search by userId"
     ></search-number-bar>
 
     <hr />
-    <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
+    <search-number-bar
+      v-on:mysubmit="getResultsById"
+      v-on:error="showErrorMessage"
+      placeholder="1"
+      btncaption="search by Id"
+    ></search-number-bar>
 
     <hr />
 
@@ -63,7 +69,7 @@ export default {
       searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
-      isVisibleModalMessage: true,
+      isVisibleModalMessage: false,
       errorMessages: []
     };
   },
@@ -118,14 +124,13 @@ export default {
     },
     showErrorMessage: function(errors = []) {
       let thisObj = this;
-      
+
       this.errorMessages = errors;
       this.isVisibleModalMessage = true;
 
       setTimeout(() => {
         thisObj.isVisibleModalMessage = false;
-        thisObj.errorMessages = [];
-      }, 2000);
+      }, 4000);
     }
   },
   watch: {},

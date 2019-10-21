@@ -5,6 +5,7 @@ import App from "./App.vue";
 
 import sectionSearch from "./components/sectionSearch.vue";
 import sectionSearchDb from "./components/sectionSearchDb.vue";
+import registrationPage from "./components/registrationPage.vue";
 
 Vue.use(VueRouter);
 
@@ -13,7 +14,8 @@ const router = new VueRouter({
   base: "/",
   routes: [
     { path: "/work-with-json", component: sectionSearch },
-    { path: "/work-with-database", component: sectionSearchDb }
+    { path: "/work-with-database", component: sectionSearchDb },
+    { path: "/registration", component: registrationPage }
   ]
 });
 

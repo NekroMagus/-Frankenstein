@@ -1,13 +1,15 @@
 <template>
   <div>
     <hr />
-    <button @click="showModalMessage">test button</button>
     <!-- post comment -->
-    <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
+
+    <post-comment-bar></post-comment-bar>
+
+    <!-- <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
     <input v-model="postedTitle" name="title" type="text" placeholder="title" size="50" />
     <input @click="postComment" type="submit" value="post comment" />
     <br />
-    <textarea v-model="postedBody" name="body" type="text" placeholder="body" rows="7"></textarea>
+    <textarea v-model="postedBody" name="body" type="text" placeholder="body" rows="7"></textarea>-->
 
     <hr />
     <!-- searc all users -->
@@ -15,19 +17,23 @@
 
     <hr />
     <!-- search by user id -->
-    <input
-      type="search"
-      name="userId"
-      v-model="searchedUserId"
-      size="10"
-      placeholder="enter user id"
-    />
-    <input type="submit" @click="getResultsByUserId" value="search by userId" />
+    <!-- <input type="search" v-model="searchedUserId" size="10" placeholder="enter user id" />
+    <input type="submit" @click="getResultsByUserId" value="search by userId" />-->
 
     <hr />
     <!-- search by id -->
-    <input type="search" name="Id" v-model="searchedId" size="10" placeholder="enter id" />
-    <input type="submit" @click="getResultsById" value="search by Id" />
+    <!-- <input type="search" v-model="searchedId" size="10" placeholder="enter id" />
+    <input type="submit" @click="getResultsById" value="search by Id" />-->
+
+    <search-number-bar
+      v-on:mysubmit="getResultsByUserId"
+      placeholder="1"
+      btncaption="search by userId"
+    ></search-number-bar>
+
+    <hr />
+
+    <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
 
     <hr />
     <!-- show search result -->
@@ -62,6 +68,9 @@
 </template>
 
 <script>
+import searchNumberBar from "./searchNumberBar.vue";
+import postCommentBar from "./postCommentBar.vue";
+
 import modalWindow from "./modal.vue";
 import modalMessage from "./modalMessage";
 
@@ -69,7 +78,7 @@ export default {
   data() {
     return {
       searchedResult: [],
-      searchedId: null,
+      // searchedId: null,
       searchedUserId: null,
       postedTitle: "",
       postedBody: "",
@@ -82,30 +91,30 @@ export default {
     };
   },
   methods: {
+    testMethod: function(value) {
+      console.log(value);
+    },
     getAllResults: function() {
       axios.get("http://localhost:3000/users").then(response => {
         this.searchedResult = response.data;
       });
     },
-    getResultsById: function() {
+    getResultsById: function(id) {
       axios
         .get("http://localhost:3000/users", {
-          params: { id: this.searchedId }
+          params: { id: id }
         })
         .then(response => {
           this.searchedResult = response.data;
         });
     },
-    getResultsByUserId: function() {
+    getResultsByUserId: function(id) {
       axios
         .get("http://localhost:3000/users", {
-          params: { userId: this.searchedUserId }
+          params: { userId: id }
         })
         .then(response => {
           this.searchedResult = response.data;
-        })
-        .then(response => {
-          console.log(response.data);
         });
     },
     postComment: function() {
@@ -148,6 +157,8 @@ export default {
     }
   },
   components: {
+    searchNumberBar,
+    postCommentBar,
     modalWindow,
     modalMessage
   }

@@ -121,6 +121,11 @@ app.delete('/db', async (req, res) => {
 app.post('/registration', parser, (req, res) => {
     if (!req.body) return res.status(400);
     const login = req.body.login;
+    if(UsersFromDB.findOne({login: login}) !== null){
+        return res.status(400).send({
+            error: "Пользователь с таким логином уже существует"
+        });
+    }
     const password = req.body.password;
     if (login.length < 5 || login.length > 16) {
          res.status(400).send({

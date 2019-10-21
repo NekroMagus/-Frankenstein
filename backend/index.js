@@ -127,7 +127,7 @@ app.post('/registration', (req, res) => {
             error: "Длина логина должна быть от 5 до 16 символов",
             fields: ['login']
         });
-    } else if (!Number.isInteger(login[0])) {
+    } else if (!Number.isInteger(+login[0])) {
         res.json({
             saved: false,
             error: "Логин не может начинаться с цифры",

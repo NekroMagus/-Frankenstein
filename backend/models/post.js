@@ -23,4 +23,4 @@ let Users = new Schema({
 });
 
 module.exports = mongoose.model('SecondPost', SecondSchema);
-module.exports = mongoose.model('Registration', Users);
+module.exports = mongoose.model('Users', Users);

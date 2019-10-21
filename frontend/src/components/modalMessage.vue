@@ -15,6 +15,10 @@ export default {
     messages: Array,
     visibility: Boolean
   },
+  mounted: function() {
+    console.log('mounted');
+    
+  },
   watch: {}
 };
 </script>

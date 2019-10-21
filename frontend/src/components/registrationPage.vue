@@ -31,13 +31,11 @@ export default {
         });
     },
     showErrorMessage: function(errors = []) {
-      let thisObj = this;
-
       this.errorMessages = errors;
       this.isVisibleModalMessage = true;
 
       setTimeout(() => {
-        thisObj.isVisibleModalMessage = false;
+        this.isVisibleModalMessage = false;
       }, 3000);
     }
   },

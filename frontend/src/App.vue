@@ -3,7 +3,8 @@
     <section-header></section-header>
     <hr />
     <nav class="nav nav-pills nav-fill">
-      <router-link to="/work-with-json" class="nav-item nav-link" exact>work with json</router-link>
+      <router-link to="/" class="nav-item nav-link" exact>main page</router-link>
+      <router-link to="/work-with-json" class="nav-item nav-link">work with json</router-link>
       <router-link to="/work-with-database" class="nav-item nav-link">work with database</router-link>
     </nav>
     <h2 class="text-center">CRUD</h2>

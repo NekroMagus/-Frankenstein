@@ -29,6 +29,7 @@
     <input type="submit" @click="getResultsById" value="search by Id" />
 
     <hr />
+
     <!-- show search result -->
     <div class="search-result">
       <div
@@ -87,6 +88,7 @@ export default {
       });
     },
     getResultsById: function() {
+
       axios
         .get("http://localhost:3000/users", {
           params: { id: this.searchedId }
@@ -135,6 +137,7 @@ export default {
         .then(response => {
           console.log(response.data);
         });
+
     }
   },
   watch: {

@@ -123,8 +123,6 @@ export default {
         });
     },
     showErrorMessage: function(errors = []) {
-      console.log("showErrorMessage");
-
       let thisObj = this;
 
       this.errorMessages = errors;

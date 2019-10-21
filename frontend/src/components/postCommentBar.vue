@@ -30,7 +30,8 @@ export default {
           title: this.title,
           body: this.body
         });
-      } else {          
+      } else {
+        this.userId = 1;          
         this.$emit("error", this.errors);
       }
     },

@@ -8,7 +8,6 @@
       <router-link to="/work-with-database" class="nav-item nav-link">work with database</router-link>
     </nav>
     <h2 class="text-center">CRUD</h2>
-    <!-- <search-section></search-section> -->
     <!-- вывод маршрута -->
     <router-view></router-view>
 
@@ -18,8 +17,6 @@
 
 <script>
 import sectionHeader from "./components/sectionHeader.vue";
-// import searchSection from "./components/sectionSearch.vue";
-// import sectionSearchDb from "./components/sectionSearchDb.vue";
 
 export default {
   name: "app",

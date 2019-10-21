@@ -18,6 +18,7 @@
     <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
 
     <hr />
+
     <!-- show search result -->
     <div class="search-result">
       <div

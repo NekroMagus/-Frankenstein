@@ -4,24 +4,36 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const allUsers = require(__dirname + '/public/json/user.json');
 const cors = require('cors');
+// connect to mongoose
+const mongoose = require('mongoose');
+// set up default mongoose connection to test database
+const mongoDB = 'mongodb://127.0.0.1/test';
+mongoose.connect(mongoDB, {useNewUrlParser: true});
+//get the default connection
+const db = mongoose.connection;
+
+//bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 const parser = bodyParser.json();
 app.use(cors());
 
 app.get('/users', async (req, res) => {
-    let userId = req.query.userId;
-    let id = req.query.id;
-    if (Number.isInteger(+userId)) {
-        let users = allUsers.filter(item => +item.userId === +req.query.userId);
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end(JSON.stringify(users));
-    } else if (Number.isInteger(+id)) {
-        let users = allUsers.filter(item => +item.id === +req.query.id);
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end(JSON.stringify(users));
-    } else {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end(JSON.stringify(allUsers));
+    try {
+        let userId = req.query.userId;
+        let id = req.query.id;
+        if (Number.isInteger(+userId)) {
+            let users = allUsers.filter(item => +item.userId === +userId);
+            await res.status(200).send(users);
+        } else if (Number.isInteger(+id)) {
+            let users = allUsers.filter(item => +item.id === +id);
+            await res.status(200).send(users);
+        } else {
+            res.status(200).send(allUsers);
+        }
+    } catch (err) {
+        res.status(err.response.status);
+        return res.send(err.message);
     }
 });
 

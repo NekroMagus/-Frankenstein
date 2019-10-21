@@ -123,7 +123,7 @@ app.post('/registration',parser, (req, res) => {
     const login = req.body.login;
     const password = req.body.password;
     if (login.length < 5 || login.length > 16) {
-        res.json({
+        res.send({
             saved: false,
             error: "Длина логина должна быть от 5 до 16 символов",
             fields: ['login']
@@ -142,7 +142,7 @@ app.post('/registration',parser, (req, res) => {
             });
             user.save(err => {
                 if (err) return console.log(err);
-                res.json({
+                res.send({
                     saved: true,
                 })
             });

@@ -14,7 +14,8 @@ export default {
     return {
       userId: 1,
       title: "",
-      body: ""
+      body: "",
+      errors: []
     };
   },
   props: {
@@ -23,11 +24,34 @@ export default {
   },
   methods: {
     submitComment: function() {
-      this.$emit("submitcomment", {
-        userId: userId,
-        title: title,
-        body: body
-      });
+      if (this.isValidData()) {
+        this.$emit("submitcomment", {
+          userId: this.userId,
+          title: this.title,
+          body: this.body
+        });
+      } else {          
+        this.$emit("error", this.errors);
+      }
+    },
+    isValidData: function() {
+      this.errors = [];
+
+      if (this.userId < 1) {
+        this.errors.push("userId не может быть меньше 1");
+      }
+      if (this.title.length < 3) {
+        this.errors.push("заголовок не может быть короче трех символов");
+      }
+      if (this.body.length < 3) {
+        this.errors.push("комментарий не может быть короче пяти символов");
+      }
+
+      if (this.errors.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 };

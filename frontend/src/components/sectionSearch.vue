@@ -1,29 +1,14 @@
 <template>
   <div>
     <hr />
-    <!-- post comment -->
-
-    <post-comment-bar></post-comment-bar>
-
-    <!-- <input v-model="searchedUserId" name="userId" type="text" placeholder="userid" size="5" />
-    <input v-model="postedTitle" name="title" type="text" placeholder="title" size="50" />
-    <input @click="postComment" type="submit" value="post comment" />
-    <br />
-    <textarea v-model="postedBody" name="body" type="text" placeholder="body" rows="7"></textarea>-->
+    <post-comment-bar v-on:submitcomment="postComment" v-on:error="showErrorMessage"></post-comment-bar>
 
     <hr />
+
     <!-- searc all users -->
     <input type="submit" @click="getAllResults" value="search all users" />
 
     <hr />
-    <!-- search by user id -->
-    <!-- <input type="search" v-model="searchedUserId" size="10" placeholder="enter user id" />
-    <input type="submit" @click="getResultsByUserId" value="search by userId" />-->
-
-    <hr />
-    <!-- search by id -->
-    <!-- <input type="search" v-model="searchedId" size="10" placeholder="enter id" />
-    <input type="submit" @click="getResultsById" value="search by Id" />-->
 
     <search-number-bar
       v-on:mysubmit="getResultsByUserId"
@@ -36,6 +21,7 @@
     <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
 
     <hr />
+
     <!-- show search result -->
     <div class="search-result">
       <div
@@ -63,7 +49,7 @@
       :visibility="isVisibleModalEdit"
     ></modal-window>
 
-    <modal-message :visibility="isVisibleModalMessage" :message="modalMessage"></modal-message>
+    <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
   </div>
 </template>
 
@@ -78,20 +64,15 @@ export default {
   data() {
     return {
       searchedResult: [],
-      // searchedId: null,
-      searchedUserId: null,
-      postedTitle: "",
-      postedBody: "",
       selectedItem: {},
-      editableTitle: "",
-      editableBody: "",
       isVisibleModalEdit: false,
       isVisibleModalMessage: true,
-      modalMessage: ""
+      errorMessages: []
     };
   },
   methods: {
     testMethod: function(value) {
+      console.log("test method");
       console.log(value);
     },
     getAllResults: function() {
@@ -117,13 +98,7 @@ export default {
           this.searchedResult = response.data;
         });
     },
-    postComment: function() {
-      let obj = {
-        userId: this.searchedUserId,
-        title: this.postedTitle,
-        body: this.postedBody
-      };
-
+    postComment: function(obj) {
       let thisObj = this;
 
       axios
@@ -132,7 +107,7 @@ export default {
           console.log("response");
         })
         .catch(function(error) {
-          thisObj.modalMessage = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
+          // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },
     deleteComment: function(ind) {
@@ -146,16 +121,17 @@ export default {
           console.log(response.data);
         });
     },
-    showModalMessage: function() {
-      console.log(modalMessage);
+    showErrorMessage: function(errors = []) {
+      let thisObj = this;
+      this.errorMessages = errors;
       this.isVisibleModalMessage = true;
+      setTimeout(() => {
+        thisObj.isVisibleModalMessage = false;
+        thisObj.errorMessages = [];
+      }, 2000);
     }
   },
-  watch: {
-    showModal: function() {
-      console.log(this.showModal);
-    }
-  },
+  watch: {},
   components: {
     searchNumberBar,
     postCommentBar,

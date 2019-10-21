@@ -11,6 +11,7 @@ const mongoDB = 'mongodb://127.0.0.1/test';
 mongoose.connect(mongoDB, {useNewUrlParser: true});
 //get the default connection
 const db = mongoose.connection;
+const Post = require('./models/post');
 
 //bind connection to error event
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
@@ -86,9 +87,31 @@ app.delete('/users', async (req, res) => {
     }
 });
 
+app.get('/db', async (req, res) => {
+    Post.find({}, (err, users) => {
+        if(err) return console.log(err);
+        res.send(users);
+    });
+});
+
+app.post('/db', parser, async (req, res) => {
+    if(!req.body) return res.sendStatus(400);
+
+    const userId = req.body.userId;
+    const title = req.body.title;
+    const body = req.body.body;
+
+    const newPost = new Post({userId : userId, title: title, body: body});
+    newPost.save(err => {
+        if(err) return console.log(err);
+        res.status(200).send(newPost);
+    });
+});
+
 const server = app.listen(3000, () => {
     let port = server.address().port;
     console.log("http://localhost:" + port + "/users");
+    console.log('http://localhost:' + port + '/db');
 });
 
 function createUser(data) {

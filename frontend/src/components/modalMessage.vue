@@ -1,6 +1,6 @@
 <template>
   <div class="modalMessage" v-if="visibility">
-    <p>{{message}}</p>
+    <p v-for="(message, index) in messages" v-bind:key="index">{{message}}</p>
   </div>
 </template>
 
@@ -10,19 +10,19 @@ export default {
     return {};
   },
   props: {
-    message: String,
+    messages: Array,
     visibility: Boolean
   }
 };
 </script>
 
 <style>
-    .modalMessage {
-        position: fixed;
-        background: #fff;
-        border: 1px solid #000;
-        padding: 9px;
-        left: 0;
-        top: 0;
-    }
+.modalMessage {
+  position: fixed;
+  background: #fff;
+  border: 3px solid red;
+  padding: 9px;
+  left: 0;
+  top: 0;
+}
 </style>

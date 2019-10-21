@@ -18,7 +18,6 @@ export default {
   },
   methods: {
     submitRegistration: function(obj) {
-      // let thisObj = this;
       console.log(obj);
 
       axios
@@ -26,7 +25,7 @@ export default {
         .then(response => {
           console.log("response");
         })
-        .catch(function(error) {
+        .catch((error) => {
           // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },

@@ -28,6 +28,8 @@ export default {
           console.log(response);
         })
         .catch((error) => {
+          console.log(error);
+          
           // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },
@@ -40,6 +42,8 @@ export default {
           console.log(response);
         })
         .catch((error) => {
+          console.log(error);
+          
           // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },

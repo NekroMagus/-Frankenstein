@@ -120,31 +120,43 @@ app.delete('/db', async (req, res) => {
 
 app.post('/registration', parser, (req, res) => {
     if (!req.body) return res.status(400);
+    
     const login = req.body.login;
     if(UsersFromDB.findOne({login: login}) !== null){
+        console.log(req.body);
+        console.log(UsersFromDB.findOne({login: login}));
+        
         return res.status(400).send({
             error: "Пользователь с таким логином уже существует"
         });
     }
     const password = req.body.password;
     if (login.length < 5 || login.length > 16) {
+        console.log(req.body);
+
          res.status(400).send({
             saved: false,
             error: "Длина логина должна быть от 5 до 16 символов",
             fields: ['login']
         });
     } else if (Number.isInteger(+login[0])) {
+        console.log(req.body);
+
         res.status(400).send({
             saved: false,
             error: "Логин не может начинаться с цифры",
             fields: ['login']
         })
     } else {
+        console.log(req.body);
+
         bCrypt.hash(password, null, null, (err, hash) => {
             let user = new UsersFromDB({
                 login: login,
                 password: hash
             });
+            console.log(req.body);
+
             user.save(err => {
                 if (err) return console.log(err);
                 res.status(200).send({

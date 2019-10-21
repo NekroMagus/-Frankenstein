@@ -118,23 +118,19 @@ app.delete('/db', async (req, res) => {
     });
 });
 
-app.post('/registration', parser, (req, res) => {
+app.post('/registration', parser, async (req, res) => {
     if (!req.body) return res.status(400);
     
     const login = req.body.login;
-    if(UsersFromDB.findOne({login: login}) !== null){
-        console.log(req.body);
-        console.log(UsersFromDB.findOne({login: login}));
-        
+    let user = await UsersFromDB.findOne({login: login});
+    if (user !== null) {
         return res.status(400).send({
             error: "Пользователь с таким логином уже существует"
         });
     }
     const password = req.body.password;
     if (login.length < 5 || login.length > 16) {
-        console.log(req.body);
-
-         res.status(400).send({
+        res.status(400).send({
             saved: false,
             error: "Длина логина должна быть от 5 до 16 символов",
             fields: ['login']

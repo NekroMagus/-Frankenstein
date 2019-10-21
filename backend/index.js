@@ -4,14 +4,17 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const allUsers = require(__dirname + '/public/json/user.json');
 const cors = require('cors');
+
 // connect to mongoose
 const mongoose = require('mongoose');
+const bCrypt = require('bcrypt-nodejs');
+const Post = require('./models/post');
+const UsersFromDB = require('./models/post');
 // set up default mongoose connection to test database
 const mongoDB = 'mongodb://127.0.0.1/test';
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 //get the default connection
 const db = mongoose.connection;
-const Post = require('./models/post');
 
 //bind connection to error event
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
@@ -89,22 +92,67 @@ app.delete('/users', async (req, res) => {
 
 app.get('/db', async (req, res) => {
     Post.find({}, (err, users) => {
-        if(err) return console.log(err);
+        if (err) return console.log(err);
         res.send(users);
     });
 });
 
 app.post('/db', parser, async (req, res) => {
-    if(!req.body) return res.sendStatus(400);
-
+    if (!req.body) return res.sendStatus(400);
     const userId = req.body.userId;
     const title = req.body.title;
     const body = req.body.body;
-
-    const newPost = new Post({userId : userId, title: title, body: body});
-    newPost.save(err => {
-        if(err) return console.log(err);
+    Post.findOne({id_title: req.body.id});
+    const newPost = new Post({userId: userId, id_post: 1, title: title, body: body});
+    await newPost.save(err => {
+        if (err) return console.log(err);
         res.status(200).send(newPost);
+    });
+});
+
+app.delete('/db', async (req, res) => {
+    const id = req.query.id;
+    Post.findByIdAndDelete(id, (err, post) => {
+        if (err) return console.log(err);
+        res.status(200).send(post);
+    });
+});
+
+app.post('/registration', (req, res) => {
+    const login = req.body.login;
+    const password = req.body.password;
+    if (login.length < 5 || login.length > 16) {
+        res.json({
+            saved: false,
+            error: "Длина логина должна быть от 5 до 16 символов",
+            fields: ['login']
+        });
+    } else if (!Number.isInteger(login[0])) {
+        res.json({
+            saved: false,
+            error: "Логин не может начинаться с цифры",
+            fields: ['login']
+        })
+    } else {
+        bCrypt.hash(password, null, null, (err, hash) => {
+            let user = new UsersFromDB({
+                login: login,
+                password: hash
+            });
+            user.save(err => {
+                if (err) return console.log(err);
+                res.json({
+                    saved: true,
+                })
+            });
+        });
+    }
+});
+
+app.get('/registration', (req, res) => {
+    UsersFromDB.find({}, (err, users) => {
+        if(err) return console.log(err);
+        res.send(users);
     });
 });
 

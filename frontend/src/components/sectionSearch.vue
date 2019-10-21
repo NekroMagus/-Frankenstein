@@ -4,12 +4,10 @@
     <post-comment-bar v-on:submitcomment="postComment" v-on:error="showErrorMessage"></post-comment-bar>
 
     <hr />
-
     <!-- searc all users -->
     <input type="submit" @click="getAllResults" value="search all users" />
 
     <hr />
-
     <search-number-bar
       v-on:mysubmit="getResultsByUserId"
       placeholder="1"
@@ -17,11 +15,9 @@
     ></search-number-bar>
 
     <hr />
-
     <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
 
     <hr />
-
     <!-- show search result -->
     <div class="search-result">
       <div
@@ -111,8 +107,6 @@ export default {
         });
     },
     deleteComment: function(ind) {
-      console.log(ind);
-
       axios
         .delete("http://localhost:3000/users", {
           params: { id: ind }
@@ -123,8 +117,10 @@ export default {
     },
     showErrorMessage: function(errors = []) {
       let thisObj = this;
+      
       this.errorMessages = errors;
       this.isVisibleModalMessage = true;
+
       setTimeout(() => {
         thisObj.isVisibleModalMessage = false;
         thisObj.errorMessages = [];

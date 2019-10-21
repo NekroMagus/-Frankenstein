@@ -1,30 +1,38 @@
 <template>
   <div class="container">
     <section-header></section-header>
-    <hr>
+    <hr />
+    <nav class="nav nav-pills nav-fill">
+      <router-link to="/work-with-json" class="nav-item nav-link" exact>work with json</router-link>
+      <router-link to="/work-with-database" class="nav-item nav-link">work with database</router-link>
+    </nav>
     <h2 class="text-center">CRUD</h2>
-    <search-section></search-section>
-    <hr>
+    <!-- <search-section></search-section> -->
+    <!-- вывод маршрута -->
+    <router-view></router-view>
+
+    <hr />
   </div>
 </template>
 
 <script>
-import searchSection from './components/sectionSearch.vue'
-import sectionHeader from './components/sectionHeader.vue'
+import sectionHeader from "./components/sectionHeader.vue";
+// import searchSection from "./components/sectionSearch.vue";
+// import sectionSearchDb from "./components/sectionSearchDb.vue";
 
 export default {
-  name: 'app',
-  data () {
-    return {
-      
-    }
+  name: "app",
+  data() {
+    return {};
   },
   components: {
-    searchSection,
     sectionHeader
   }
-}
+};
 </script>
 
 <style>
+.router-link-active {
+  background-color: lightgreen;
+}
 </style>

@@ -118,17 +118,18 @@ app.delete('/db', async (req, res) => {
     });
 });
 
-app.post('/registration', (req, res) => {
+app.post('/registration',parser, (req, res) => {
+    if(!req.body) return res.status(400);
     const login = req.body.login;
     const password = req.body.password;
     if (login.length < 5 || login.length > 16) {
-        res.json({
+        res.send({
             saved: false,
             error: "Длина логина должна быть от 5 до 16 символов",
             fields: ['login']
         });
-    } else if (!Number.isInteger(+login[0])) {
-        res.json({
+    } else if (Number.isInteger(+login[0])) {
+        res.send({
             saved: false,
             error: "Логин не может начинаться с цифры",
             fields: ['login']
@@ -141,7 +142,7 @@ app.post('/registration', (req, res) => {
             });
             user.save(err => {
                 if (err) return console.log(err);
-                res.json({
+                res.send({
                     saved: true,
                 })
             });

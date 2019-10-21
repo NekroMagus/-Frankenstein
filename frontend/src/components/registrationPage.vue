@@ -32,6 +32,8 @@ export default {
         });
     },
     showAllUsers: function() {
+      console.log('showAllUsers');
+      
       axios
         .get("http://localhost:3000/registration")
         .then(response => {

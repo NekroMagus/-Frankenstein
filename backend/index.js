@@ -12,7 +12,7 @@ const Post = require('./models/post');
 const UsersFromDB = require('./models/post');
 // set up default mongoose connection to test database
 const mongoDB = 'mongodb://127.0.0.1/test';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex: true});
 //get the default connection
 const db = mongoose.connection;
 
@@ -160,6 +160,7 @@ const server = app.listen(3000, () => {
     let port = server.address().port;
     console.log("http://localhost:" + port + "/users");
     console.log('http://localhost:' + port + '/db');
+    console.log('http://localhost:' + port + '/registration');
 });
 
 function createUser(data) {

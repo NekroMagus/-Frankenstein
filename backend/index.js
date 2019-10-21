@@ -8,7 +8,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 // set up default mongoose connection to test database
 const mongoDB = 'mongodb://127.0.0.1/test';
-mongoose.connect(mongoDB, {useNewUrlParser: true});
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 //get the default connection
 const db = mongoose.connection;
 const Post = require('./models/post');

@@ -12,7 +12,7 @@ const Post = require('./models/post');
 const UsersFromDB = require('./models/post');
 // set up default mongoose connection to test database
 const mongoDB = 'mongodb://127.0.0.1/test';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex: true});
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 //get the default connection
 const db = mongoose.connection;
 
@@ -118,18 +118,18 @@ app.delete('/db', async (req, res) => {
     });
 });
 
-app.post('/registration',parser, (req, res) => {
-    if(!req.body) return res.status(400);
+app.post('/registration', parser, (req, res) => {
+    if (!req.body) return res.status(400);
     const login = req.body.login;
     const password = req.body.password;
     if (login.length < 5 || login.length > 16) {
-       return  res.send({
+         res.status(400).send({
             saved: false,
             error: "Длина логина должна быть от 5 до 16 символов",
             fields: ['login']
         });
     } else if (Number.isInteger(+login[0])) {
-       return  res.send({
+        res.status(400).send({
             saved: false,
             error: "Логин не может начинаться с цифры",
             fields: ['login']
@@ -142,7 +142,7 @@ app.post('/registration',parser, (req, res) => {
             });
             user.save(err => {
                 if (err) return console.log(err);
-                 return res.send({
+                res.status(200).send({
                     saved: true,
                 })
             });
@@ -152,7 +152,7 @@ app.post('/registration',parser, (req, res) => {
 
 app.get('/registration', (req, res) => {
     UsersFromDB.find({}, (err, users) => {
-        if(err) return console.log(err);
+        if (err) return console.log(err);
         res.send(users);
     });
 });

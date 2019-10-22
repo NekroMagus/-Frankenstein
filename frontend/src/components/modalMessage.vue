@@ -1,7 +1,11 @@
 <template>
   <transition name="modal-message">
-    <div class="modalMessage" v-show="visibility">
-      <p v-for="(message, index) in messages" v-bind:key="index">{{message}}</p>
+    <div class="modal-box" v-show="visibility">
+      <div class="modal-message">
+        <b>Внимание ошибка:</b>
+        <hr />
+        <p v-for="(message, index) in messages" v-bind:key="index">{{message}}</p>
+      </div>
     </div>
   </transition>
 </template>
@@ -15,22 +19,32 @@ export default {
     messages: Array,
     visibility: Boolean
   },
-  mounted: function() {
-    console.log('mounted');
-    
-  },
+  mounted: function() {},
   watch: {}
 };
 </script>
 
 <style>
-.modalMessage {
+.modal-box {
   position: fixed;
-  background: #fff;
-  border: 3px solid red;
-  padding: 9px;
   left: 0;
   top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-message {
+  /* position: fixed; */
+  background: #fff;
+  border: 3px solid red;
+  border-radius: 5px;
+  box-shadow: 0 0 15px #333;
+  padding: 9px;
+  /* left: 0;
+  top: 0; */
 }
 
 .modal-message-enter-active,

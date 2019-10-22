@@ -51,7 +51,7 @@
       :visibility="isVisibleModalEdit"
     ></modal-window>
 
-    <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
+    <modal-message :visibility="errorMessages.length > 0" :messages="errorMessages"></modal-message>
   </div>
 </template>
 
@@ -68,7 +68,6 @@ export default {
       searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
-      isVisibleModalMessage: false,
       errorMessages: []
     };
   },
@@ -121,10 +120,9 @@ export default {
     },
     showErrorMessage: function(errors = []) {
       this.errorMessages = errors;
-      this.isVisibleModalMessage = true;
 
       setTimeout(() => {
-        this.isVisibleModalMessage = false;
+        this.errorMessages = [];
       }, 4000);
     }
   },

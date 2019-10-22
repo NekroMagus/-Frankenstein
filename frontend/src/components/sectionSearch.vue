@@ -51,7 +51,7 @@
       :visibility="isVisibleModalEdit"
     ></modal-window>
 
-    <modal-message :visibility="errorMessages.length > 0" :messages="errorMessages"></modal-message>
+    <modal-message :visibility="errorMessageIsVisible" :messages="errorMessages"></modal-message>
   </div>
 </template>
 
@@ -68,7 +68,8 @@ export default {
       searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
-      errorMessages: []
+      errorMessages: [],
+      errorMessageIsVisible: false
     };
   },
   methods: {
@@ -105,7 +106,7 @@ export default {
         .then(response => {
           console.log("response");
         })
-        .catch((error) => {
+        .catch(error => {
           this.errorMessages.push("ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!");
         });
     },
@@ -120,9 +121,10 @@ export default {
     },
     showErrorMessage: function(errors = []) {
       this.errorMessages = errors;
-
+      this.errorMessageIsVisible = true;
+      
       setTimeout(() => {
-        this.errorMessages = [];
+        this.errorMessageIsVisible = false;
       }, 4000);
     }
   },

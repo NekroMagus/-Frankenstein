@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <label for>Логин:</label>
-    <input type="text" v-model="login" size="16" maxlength="16" />
-    <label for>Пароль:</label>
-    <input type="password" v-model="password" size="16" maxlength="16" />
-    <label for>Повторите пароль:</label>
-    <input type="password" v-model="repeatPassword" size="16" maxlength="16" />
-    <input type="submit" @click="submitRegistration" value="Зарегистрироваться" />
+  <div class="form-box">
+    <div class="form">
+      <label class="form__label" for>Логин:</label>
+      <input type="text" v-model="login" size="16" maxlength="16" />
+      <label class="form__label" for>Пароль:</label>
+      <input type="password" v-model="password" size="16" maxlength="16" />
+      <label class="form__label" for>Повторите пароль:</label>
+      <input type="password" v-model="repeatPassword" size="16" maxlength="16" />
+      <input class="form__submit" type="submit" @click="submitRegistration" value="Зарегистрироваться" />
+    </div>
   </div>
 </template>
 
@@ -55,4 +57,25 @@ export default {
 </script>
 
 <style>
+.form-box {
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 5px #333;
+  padding: 15px 25px;
+  border-radius: 5px;
+}
+
+.form__label {
+  padding: 10px 0 0px 0;
+}
+
+.form__submit {
+  margin: 20px 0 5px;
+}
 </style>

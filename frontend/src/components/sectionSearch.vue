@@ -1,6 +1,5 @@
 <template>
   <div>
-    <hr />
     <post-comment-bar v-on:submitcomment="postComment" v-on:error="showErrorMessage"></post-comment-bar>
 
     <hr />

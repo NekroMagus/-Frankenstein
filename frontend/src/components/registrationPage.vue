@@ -1,12 +1,23 @@
 <template>
   <div>
-    <registration-form v-on:submitregistration="submitRegistration" v-on:error="showErrorMessage"></registration-form>
+    <div class="form-box">
+      <registration-form v-on:submitregistration="submitRegistration" v-on:error="showErrorMessage"></registration-form>
+      <registration-form-with-email
+        v-on:submitRegistrationWithEmail="submitRegistrationWithEmail"
+        v-on:error="showErrorMessage"
+      ></registration-form-with-email>
+      <authorization-form v-on:submitAuthorization="submitAuthorization"></authorization-form>
+    </div>
+    <hr />
+    <button @click="showAllUsers">show all users</button>
     <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
   </div>
 </template>
 
 <script>
 import registrationForm from "./registrationForm.vue";
+import registrationFormWithEmail from "./registrationFormWithEmail.vue";
+import authorizationForm from "./authorizationForm.vue";
 import modalMessage from "./modalMessage";
 
 export default {
@@ -17,36 +28,73 @@ export default {
     };
   },
   methods: {
+    submitAuthorization: function(obj) {
+      console.log(obj);
+      
+    },
     submitRegistration: function(obj) {
-      // let thisObj = this;
       console.log(obj);
 
       axios
         .post("http://localhost:3000/registration", obj)
         .then(response => {
-          console.log("response");
+          console.log(response);
         })
-        .catch(function(error) {
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    submitRegistrationWithEmail: function(obj) {
+      console.log(obj);
+
+      axios
+        .post("http://localhost:3000/rega", obj)
+        .then(response => {
+          let token = response.data.user.token;
+          axios.defaults.headers.common["Authorization"] = token;
+          //   this.$router.push('/current');
+          console.log(response.data.user.token);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    showAllUsers: function() {
+      console.log("showAllUsers");
+
+      axios
+        .get("http://localhost:3000/registration")
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+
           // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },
     showErrorMessage: function(errors = []) {
-      let thisObj = this;
-
       this.errorMessages = errors;
       this.isVisibleModalMessage = true;
 
       setTimeout(() => {
-        thisObj.isVisibleModalMessage = false;
+        this.isVisibleModalMessage = false;
       }, 3000);
     }
   },
   components: {
     registrationForm,
+    registrationFormWithEmail,
+    authorizationForm,
     modalMessage
   }
 };
 </script>
 
 <style>
+.form-box {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
 </style>

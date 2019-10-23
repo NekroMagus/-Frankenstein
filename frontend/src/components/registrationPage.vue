@@ -33,17 +33,20 @@ export default {
   methods: {
     currentGet: function() {
       console.log(token);
-      
+
       // axios.defaults.headers.common["Authorization"] = token;
 
-      axios
-        .get({ url: "http://localhost:3000/current", headers: {'Authorization': `Token ${token}`}})
+      axios({
+        url: "http://localhost:3000/current",
+        method: "get",
+        headers: { Authorization: `Token ${token}` }
+      })
         .then(response => {
-          console.log('response');
+          console.log("response");
           console.log(response);
         })
         .catch(error => {
-          console.log('oshibka');
+          console.log("oshibka");
           console.log(error);
         });
     },

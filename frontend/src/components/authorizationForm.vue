@@ -5,12 +5,7 @@
       <input type="email" v-model="email" size="16" maxlength="16" />
       <label class="form__label" for>Пароль:</label>
       <input type="password" v-model="password" size="16" maxlength="16" />
-      <input
-        class="form__submit"
-        type="submit"
-        @click="submitAuthorization"
-        value="Авторизация"
-      />
+      <input class="form__submit" type="submit" @click="submitAuthorization" value="Авторизация" />
     </div>
   </div>
 </template>
@@ -27,9 +22,10 @@ export default {
   methods: {
     submitAuthorization: function() {
       // console.log('submitAuthorization');
-      
+
       this.$emit("submitAuthorization", {
-        user: { email: this.email, password: this.password }
+        email: this.email,
+        password: this.password
       });
     }
   }

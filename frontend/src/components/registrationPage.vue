@@ -10,6 +10,7 @@
     </div>
     <hr />
     <button @click="showAllUsers">show all users</button>
+    <button @click="currentGet">show current user</button>
     <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
   </div>
 </template>
@@ -20,6 +21,8 @@ import registrationFormWithEmail from "./registrationFormWithEmail.vue";
 import authorizationForm from "./authorizationForm.vue";
 import modalMessage from "./modalMessage";
 
+let token;
+
 export default {
   data() {
     return {
@@ -28,9 +31,31 @@ export default {
     };
   },
   methods: {
+    currentGet: function() {
+      console.log(token);
+      
+      axios.defaults.headers.common["Authorization"] = token;
+
+      axios
+        .get({url: "http://localhost:3000/current", headers: `Token ${token}`})
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     submitAuthorization: function(obj) {
       console.log(obj);
-      
+      axios
+        .post("http://localhost:3000/login", obj)
+        .then(response => {
+          console.log(response);
+          token = response.data.user.token;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     submitRegistration: function(obj) {
       console.log(obj);
@@ -46,14 +71,10 @@ export default {
     },
     submitRegistrationWithEmail: function(obj) {
       console.log(obj);
-
       axios
         .post("http://localhost:3000/rega", obj)
         .then(response => {
-          let token = response.data.user.token;
-          axios.defaults.headers.common["Authorization"] = token;
-          //   this.$router.push('/current');
-          console.log(response.data.user.token);
+          console.log(response);
         })
         .catch(error => {
           console.log(error);

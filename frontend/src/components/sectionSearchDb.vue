@@ -10,21 +10,14 @@
     <hr />
     <search-number-bar
       v-on:mysubmit="getResultsByUserId"
-      v-on:error="showErrorMessage"
       placeholder="1"
       btncaption="search by userId"
     ></search-number-bar>
 
     <hr />
-    <search-number-bar
-      v-on:mysubmit="getResultsById"
-      v-on:error="showErrorMessage"
-      placeholder="1"
-      btncaption="search by Id"
-    ></search-number-bar>
+    <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
 
     <hr />
-
     <!-- show search result -->
     <div class="search-result">
       <div
@@ -69,7 +62,7 @@ export default {
       searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
-      isVisibleModalMessage: false,
+      isVisibleModalMessage: true,
       errorMessages: []
     };
   },
@@ -79,13 +72,13 @@ export default {
       console.log(value);
     },
     getAllResults: function() {
-      axios.get("http://localhost:3000/users").then(response => {
+      axios.get("http://localhost:3000/db").then(response => {
         this.searchedResult = response.data;
       });
     },
     getResultsById: function(id) {
       axios
-        .get("http://localhost:3000/users", {
+        .get("http://localhost:3000/db", {
           params: { id: id }
         })
         .then(response => {
@@ -94,7 +87,7 @@ export default {
     },
     getResultsByUserId: function(id) {
       axios
-        .get("http://localhost:3000/users", {
+        .get("http://localhost:3000/db", {
           params: { userId: id }
         })
         .then(response => {
@@ -105,7 +98,7 @@ export default {
       let thisObj = this;
 
       axios
-        .post("http://localhost:3000/users", obj)
+        .post("http://localhost:3000/db", obj)
         .then(response => {
           console.log("response");
         })
@@ -115,7 +108,7 @@ export default {
     },
     deleteComment: function(ind) {
       axios
-        .delete("http://localhost:3000/users", {
+        .delete("http://localhost:3000/db", {
           params: { id: ind }
         })
         .then(response => {
@@ -130,7 +123,8 @@ export default {
 
       setTimeout(() => {
         thisObj.isVisibleModalMessage = false;
-      }, 4000);
+        thisObj.errorMessages = [];
+      }, 2000);
     }
   },
   watch: {},

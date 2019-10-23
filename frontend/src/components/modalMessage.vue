@@ -1,7 +1,9 @@
 <template>
-  <div class="modalMessage" v-if="visibility">
-    <p v-for="(message, index) in messages" v-bind:key="index">{{message}}</p>
-  </div>
+  <transition name="modal-message">
+    <div class="modalMessage" v-show="visibility">
+      <p v-for="(message, index) in messages" v-bind:key="index">{{message}}</p>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -12,7 +14,8 @@ export default {
   props: {
     messages: Array,
     visibility: Boolean
-  }
+  },
+  watch: {}
 };
 </script>
 
@@ -24,5 +27,15 @@ export default {
   padding: 9px;
   left: 0;
   top: 0;
+}
+
+.modal-message-enter-active,
+.modal-message-leave-active {
+  transition: all 0.3s;
+}
+.modal-message-enter,
+.modal-message-leave-to {
+  opacity: 0;
+  transform: scale(0.2);
 }
 </style>

@@ -10,19 +10,19 @@ const bCrypt = ex.db.bCrypt;
 
 ex.routers.router.use(parser);
 
-router.get('/registration',auth.optional , (req, res) => {
+router.get('/registration', auth.optional, (req, res) => {
     UsersFromDB.find({}, (err, users) => {
         if (err) return console.log(err);
         res.send(users);
     });
 });
 
-router.post('/registration',auth.optional, async (req, res) => {
+router.post('/registration', auth.optional, async (req, res) => {
     if (!req.body) return res.status(400);
     const login = req.body.login;
     let user = await UsersFromDB.findOne({login: login});
     if (user !== null) {
-        return res.status(400).send( {
+        return res.status(400).send({
             error: "Пользователь с таким логином уже существует"
         });
     }
@@ -58,9 +58,9 @@ router.post('/registration',auth.optional, async (req, res) => {
 
 //POST new user route (optional, everyone has access)
 router.post('/rega', auth.optional, (req, res, next) => {
-    const user = req.body;
+    const {body : {user}} = req;
 
-    if(!user.email) {
+    if (!user.email) {
         return res.status(422).json({
             errors: {
                 email: 'is required',
@@ -68,7 +68,7 @@ router.post('/rega', auth.optional, (req, res, next) => {
         });
     }
 
-    if(!user.password) {
+    if (!user.password) {
         return res.status(422).json({
             errors: {
                 password: 'is required',
@@ -81,14 +81,14 @@ router.post('/rega', auth.optional, (req, res, next) => {
     finalUser.setPassword(user.password);
 
     return finalUser.save()
-        .then(() => res.json({ user: finalUser.toAuthJSON() }));
+        .then(() => res.json({user: finalUser.toAuthJSON()}));
 });
 
 //POST login route (optional, everyone has access)
 router.post('/login', auth.optional, (req, res, next) => {
-    const user = req.body;
+    const {body: {user}} = req;
 
-    if(!user.email) {
+    if (!user.email) {
         return res.status(422).json({
             errors: {
                 email: 'is required',
@@ -96,7 +96,7 @@ router.post('/login', auth.optional, (req, res, next) => {
         });
     }
 
-    if(!user.password) {
+    if (!user.password) {
         return res.status(422).json({
             errors: {
                 password: 'is required',
@@ -104,33 +104,33 @@ router.post('/login', auth.optional, (req, res, next) => {
         });
     }
 
-    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-        if(err) {
+    return passport.authenticate('local', {session: false}, (err, passportUser, info) => {
+        if (err) {
             return next(err);
         }
 
-        if(passportUser) {
+        if (passportUser) {
             const user = passportUser;
             user.token = passportUser.generateJWT();
 
-            return res.json({ user: user.toAuthJSON() });
+            return res.json({user: user.toAuthJSON()});
         }
 
-        return status(400).info;
+        return info;
     })(req, res, next);
 });
 
 //GET current route (required, only authenticated users have access)
 router.get('/current', auth.required, (req, res, next) => {
-    const { payload: { id } } = req;
+    const {payload: {id}} = req;
 
     return Users.findById(id)
         .then((user) => {
-            if(!user) {
+            if (!user) {
                 return res.sendStatus(400);
             }
 
-            return res.json({ user: user.toAuthJSON() });
+            return res.json({user: user.toAuthJSON()});
         });
 });
 

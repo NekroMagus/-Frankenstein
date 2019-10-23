@@ -50,8 +50,7 @@ export default {
     submitRegistration: function() {
       if (this.isValidData()) {
         this.$emit("submitRegistrationWithEmail", {
-          email: this.email,
-          password: this.password
+          user: { email: this.email, password: this.password }
         });
       } else {
         this.$emit("error", this.errors);

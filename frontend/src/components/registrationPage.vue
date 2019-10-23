@@ -11,6 +11,7 @@
     <hr />
     <button @click="showAllUsers">show all users</button>
     <button @click="currentGet">show current user</button>
+    <button @click="showJWT">showJWT</button>
     <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
   </div>
 </template>
@@ -34,19 +35,15 @@ export default {
     currentGet: function() {
       console.log(token);
 
-      // axios.defaults.headers.common["Authorization"] = token;
-
       axios({
         url: "http://localhost:3000/current",
-        method: "get",
-        headers: { Authorization: `Token ${token}` }
+        method: "get"
+        // headers: { Authorization: `Token ${token}` }
       })
         .then(response => {
-          console.log("response");
           console.log(response);
         })
         .catch(error => {
-          console.log("oshibka");
           console.log(error);
         });
     },
@@ -57,6 +54,7 @@ export default {
         .then(response => {
           console.log(response);
           token = response.data.user.token;
+          axios.defaults.headers["Authorization"] = `Token ${token}`;
         })
         .catch(error => {
           console.log(error);
@@ -95,8 +93,16 @@ export default {
         })
         .catch(error => {
           console.log(error);
-
-          // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
+        });
+    },
+    showJWT: function() {
+      axios
+        .get("http://localhost:3000/allrega")
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
         });
     },
     showErrorMessage: function(errors = []) {

@@ -58,7 +58,7 @@ router.post('/registration', auth.optional, async (req, res) => {
 
 //POST new user route (optional, everyone has access)
 router.post('/rega', auth.optional, (req, res, next) => {
-    const {body : {user}} = req;
+    const {body: {user}} = req;
 
     if (!user.email) {
         return res.status(422).json({
@@ -132,6 +132,13 @@ router.get('/current', auth.required, (req, res, next) => {
 
             return res.json({user: user.toAuthJSON()});
         });
+});
+
+router.get('/allrega', auth.optional, (req, res) => {
+    Users.find({}, (err, user) => {
+        if (err) return console.log(err);
+        return res.json(user);
+    });
 });
 
 

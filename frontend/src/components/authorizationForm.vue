@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     submitAuthorization: function() {
-      console.log('submitAuthorization');
+      // console.log('submitAuthorization');
       
       this.$emit("submitAuthorization", {
         user: { email: this.email, password: this.password }

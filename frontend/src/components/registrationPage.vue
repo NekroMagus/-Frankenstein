@@ -1,6 +1,8 @@
 <template>
   <div>
     <registration-form v-on:submitregistration="submitRegistration" v-on:error="showErrorMessage"></registration-form>
+    <hr>
+    <button @click="showAllUsers">show all users</button>
     <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
   </div>
 </template>
@@ -18,26 +20,39 @@ export default {
   },
   methods: {
     submitRegistration: function(obj) {
-      // let thisObj = this;
       console.log(obj);
 
       axios
         .post("http://localhost:3000/registration", obj)
         .then(response => {
-          console.log("response");
+          console.log(response);
         })
-        .catch(function(error) {
+        .catch((error) => {
+          console.log(error);
+          
+          // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
+        });
+    },
+    showAllUsers: function() {
+      console.log('showAllUsers');
+      
+      axios
+        .get("http://localhost:3000/registration")
+        .then(response => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+          
           // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },
     showErrorMessage: function(errors = []) {
-      let thisObj = this;
-
       this.errorMessages = errors;
       this.isVisibleModalMessage = true;
 
       setTimeout(() => {
-        thisObj.isVisibleModalMessage = false;
+        this.isVisibleModalMessage = false;
       }, 3000);
     }
   },

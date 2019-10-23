@@ -9,9 +9,9 @@
       <router-link to="/registration" class="nav-item nav-link">registration</router-link>
     </nav>
     <h2 class="text-center">CRUD</h2>
+    <hr>
     <!-- вывод маршрута -->
     <router-view></router-view>
-
     <hr />
   </div>
 </template>

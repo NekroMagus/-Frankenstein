@@ -1,6 +1,5 @@
 <template>
   <div>
-    <hr />
     <post-comment-bar v-on:submitcomment="postComment" v-on:error="showErrorMessage"></post-comment-bar>
 
     <hr />
@@ -52,7 +51,7 @@
       :visibility="isVisibleModalEdit"
     ></modal-window>
 
-    <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
+    <modal-message :visibility="errorMessageIsVisible" :messages="errorMessages"></modal-message>
   </div>
 </template>
 
@@ -69,8 +68,8 @@ export default {
       searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
-      isVisibleModalMessage: false,
-      errorMessages: []
+      errorMessages: [],
+      errorMessageIsVisible: false
     };
   },
   methods: {
@@ -102,15 +101,13 @@ export default {
         });
     },
     postComment: function(obj) {
-      let thisObj = this;
-
       axios
         .post("http://localhost:3000/users", obj)
         .then(response => {
           console.log("response");
         })
-        .catch(function(error) {
-          // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
+        .catch(error => {
+          this.errorMessages.push("ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!");
         });
     },
     deleteComment: function(ind) {
@@ -123,13 +120,11 @@ export default {
         });
     },
     showErrorMessage: function(errors = []) {
-      let thisObj = this;
-
       this.errorMessages = errors;
-      this.isVisibleModalMessage = true;
-
+      this.errorMessageIsVisible = true;
+      
       setTimeout(() => {
-        thisObj.isVisibleModalMessage = false;
+        this.errorMessageIsVisible = false;
       }, 4000);
     }
   },

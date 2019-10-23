@@ -37,13 +37,16 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
 
       axios
-        .get({url: "http://localhost:3000/current", headers: `Token ${token}`})
+        .get({url: "http://localhost:3000/current", {params: {
+          headers: `Token ${token}`}
+        } )
         .then(response => {
           console.log(response);
         })
         .catch(error => {
           console.log(error);
         });
+        
     },
     submitAuthorization: function(obj) {
       console.log(obj);

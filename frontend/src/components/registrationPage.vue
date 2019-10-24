@@ -12,6 +12,8 @@
     <button @click="showAllUsers">show all users</button>
     <button @click="currentGet">show current user</button>
     <button @click="showJWT">showJWT</button>
+    <hr>
+    <section-show-users-accounts :accountList="accountList"></section-show-users-accounts>
     <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
   </div>
 </template>
@@ -20,6 +22,7 @@
 import registrationForm from "./registrationForm.vue";
 import registrationFormWithEmail from "./registrationFormWithEmail.vue";
 import authorizationForm from "./authorizationForm.vue";
+import sectionShowUsersAccounts from "./sectionShowUsersAccounts";
 import modalMessage from "./modalMessage";
 
 let token;
@@ -27,6 +30,7 @@ let token;
 export default {
   data() {
     return {
+      accountList: [],
       isVisibleModalMessage: false,
       errorMessages: []
     };
@@ -99,7 +103,8 @@ export default {
       axios
         .get("http://localhost:3000/allrega")
         .then(response => {
-          console.log(response);
+          console.log(response.data);
+          this.accountList = response.data;
         })
         .catch(error => {
           console.log(error);
@@ -118,6 +123,7 @@ export default {
     registrationForm,
     registrationFormWithEmail,
     authorizationForm,
+    sectionShowUsersAccounts,
     modalMessage
   }
 };

@@ -25,7 +25,6 @@ import authorizationForm from "./authorizationForm.vue";
 import sectionShowUsersAccounts from "./sectionShowUsersAccounts";
 import modalMessage from "./modalMessage";
 
-let token;
 
 export default {
   data() {
@@ -37,7 +36,6 @@ export default {
   },
   methods: {
     currentGet: function() {
-      console.log(token);
 
       axios({
         url: "http://localhost:3000/current",
@@ -57,8 +55,10 @@ export default {
         .post("http://localhost:3000/login", obj)
         .then(response => {
           console.log(response);
-          token = response.data.user.token;
+          let token = response.data.user.token;
           axios.defaults.headers["Authorization"] = `Token ${token}`;
+
+          localStorage.setItem('mytoken', token);
         })
         .catch(error => {
           console.log(error);

@@ -9,7 +9,9 @@ import registrationPage from "./components/registrationPage.vue";
 
 Vue.use(VueRouter);
 
-
+if (localStorage.getItem('mytoken') !== null) {
+  axios.defaults.headers["Authorization"] = `Token ${localStorage.getItem('mytoken')}`;
+}
 
 const router = new VueRouter({
   mode: "history",

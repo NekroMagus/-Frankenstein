@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import RegistryValidator from "../assets/js/validation.js";
+import RegistryValidator from "../assets/js/registryValidator.js";
 
 export default {
   data() {
@@ -33,11 +33,18 @@ export default {
       if (!RegistryValidator.isValidLogin(this.login)) {
         return false;
       }
+      if (!RegistryValidator.isValidPassword(this.password)) {
+        return false;
+      }
       if (
-        !RegistryValidator.isValidPassword(this.password, this.repeatPassword)
+        !RegistryValidator.isValidRepeatPassword(
+          this.password,
+          this.repeatPassword
+        )
       ) {
         return false;
       }
+      return true;
     },
     submitRegistration: function() {
       if (this.isValidData()) {

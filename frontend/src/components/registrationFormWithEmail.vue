@@ -2,7 +2,7 @@
   <div class="form-box">
     <div class="form">
       <label class="form__label" for>Почта:</label>
-      <input type="email" v-model="email" size="16" maxlength="16" />
+      <input type="email" v-model="email" size="16" maxlength="16" placeholder="name@email.com" />
       <label class="form__label" for>Пароль:</label>
       <input type="password" v-model="password" size="16" maxlength="16" />
       <label class="form__label" for>Повторите пароль:</label>
@@ -18,34 +18,33 @@
 </template>
 
 <script>
+import RegistryValidator from "../assets/js/registryValidator.js";
+
 export default {
   data() {
     return {
       email: "",
       password: "",
-      repeatPassword: "",
-      errors: []
+      repeatPassword: ""
     };
   },
   methods: {
     isValidData: function() {
-      this.errors = [];
-
-      if (this.email.length < 5 || this.password.length < 5) {
-        this.errors.push("логин или пароль не могут быть меньее 5 символов");
-      } else if (this.password !== this.repeatPassword) {
-        this.errors.push("повторный пароль введен неверно");
-      }
-
-      if (Number.isInteger(+this.email[0])) {
-        this.errors.push("логин не может начинаться с числа");
-      }
-
-      if (this.errors.length > 0) {
+      if (!RegistryValidator.isValidEmail(this.email)) {
         return false;
-      } else {
-        return true;
       }
+      if (!RegistryValidator.isValidPassword(this.password)) {
+        return false;
+      }
+      if (
+        !RegistryValidator.isValidRepeatPassword(
+          this.password,
+          this.repeatPassword
+        )
+      ) {
+        return false;
+      }
+      return true;
     },
     submitRegistration: function() {
       if (this.isValidData()) {
@@ -53,7 +52,7 @@ export default {
           user: { email: this.email, password: this.password }
         });
       } else {
-        this.$emit("error", this.errors);
+        this.$emit("error", RegistryValidator.errors);
       }
     }
   }

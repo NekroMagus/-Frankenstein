@@ -6,7 +6,7 @@
         v-on:submitRegistrationWithEmail="submitRegistrationWithEmail"
         v-on:error="showErrorMessage"
       ></registration-form-with-email>
-      <authorization-form v-on:submitAuthorization="submitAuthorization"></authorization-form>
+      <authorization-form v-on:submitAuthorization="submitAuthorization" v-on:error="showErrorMessage"></authorization-form>
     </div>
     <hr />
     <button @click="showAllUsers">show all users</button>

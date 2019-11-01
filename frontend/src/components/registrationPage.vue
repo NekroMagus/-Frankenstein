@@ -23,7 +23,6 @@ import registrationForm from "./registrationForm.vue";
 import registrationFormWithEmail from "./registrationFormWithEmail.vue";
 import authorizationForm from "./authorizationForm.vue";
 import sectionShowUsersAccounts from "./sectionShowUsersAccounts";
-import modalMessage from "./modalMessage";
 
 
 export default {
@@ -123,8 +122,7 @@ export default {
     registrationForm,
     registrationFormWithEmail,
     authorizationForm,
-    sectionShowUsersAccounts,
-    modalMessage
+    sectionShowUsersAccounts
   }
 };
 </script>

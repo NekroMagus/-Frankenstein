@@ -23,7 +23,6 @@
     ></search-number-bar>
 
     <hr />
-
     <!-- show search result -->
     <div class="search-result">
       <div
@@ -60,7 +59,6 @@ import searchNumberBar from "./searchNumberBar.vue";
 import postCommentBar from "./postCommentBar.vue";
 
 import modalWindow from "./modal.vue";
-import modalMessage from "./modalMessage";
 
 export default {
   data() {
@@ -78,13 +76,13 @@ export default {
       console.log(value);
     },
     getAllResults: function() {
-      axios.get("http://localhost:3000/users").then(response => {
+      axios.get("http://localhost:3000/db").then(response => {
         this.searchedResult = response.data;
       });
     },
     getResultsById: function(id) {
       axios
-        .get("http://localhost:3000/users", {
+        .get("http://localhost:3000/db", {
           params: { id: id }
         })
         .then(response => {
@@ -93,7 +91,7 @@ export default {
     },
     getResultsByUserId: function(id) {
       axios
-        .get("http://localhost:3000/users", {
+        .get("http://localhost:3000/db", {
           params: { userId: id }
         })
         .then(response => {
@@ -101,18 +99,20 @@ export default {
         });
     },
     postComment: function(obj) {
+      let thisObj = this;
+
       axios
-        .post("http://localhost:3000/users", obj)
+        .post("http://localhost:3000/db", obj)
         .then(response => {
           console.log("response");
         })
-        .catch(error => {
-          this.errorMessages.push("ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!");
+        .catch(function(error) {
+          // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
         });
     },
     deleteComment: function(ind) {
       axios
-        .delete("http://localhost:3000/users", {
+        .delete("http://localhost:3000/db", {
           params: { id: ind }
         })
         .then(response => {
@@ -122,7 +122,7 @@ export default {
     showErrorMessage: function(errors = []) {
       this.errorMessages = errors;
       this.errorMessageIsVisible = true;
-      
+
       setTimeout(() => {
         this.errorMessageIsVisible = false;
       }, 4000);
@@ -132,8 +132,7 @@ export default {
   components: {
     searchNumberBar,
     postCommentBar,
-    modalWindow,
-    modalMessage
+    modalWindow
   }
 };
 </script>

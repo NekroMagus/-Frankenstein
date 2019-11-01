@@ -7,20 +7,30 @@
     <input type="submit" @click="getAllResults" value="search all users" />
 
     <hr />
-    <search-number-bar
-      v-on:mysubmit="getResultsByUserId"
-      v-on:error="showErrorMessage"
-      placeholder="1"
-      btncaption="search by userId"
-    ></search-number-bar>
+    <div class="get-results-box">
+      <search-number-bar
+        v-on:mysubmit="getResultsByUserId"
+        v-on:error="showErrorMessage"
+        placeholder="1"
+        btncaption="search by userId"
+      ></search-number-bar>
+
+      <search-number-bar
+        v-on:mysubmit="getResultsById"
+        v-on:error="showErrorMessage"
+        placeholder="1"
+        btncaption="search by Id"
+      ></search-number-bar>
+    </div>
 
     <hr />
-    <search-number-bar
-      v-on:mysubmit="getResultsById"
-      v-on:error="showErrorMessage"
-      placeholder="1"
-      btncaption="search by Id"
-    ></search-number-bar>
+
+    <input
+      type="text"
+      v-model="searchTitle"
+      v-show="searchedResult.length > 0"
+      placeholder="search by title"
+    />
 
     <hr />
 
@@ -28,7 +38,7 @@
     <div class="search-result">
       <div
         class="search-result__item rounded"
-        v-for="(item, index) in searchedResult"
+        v-for="(item, index) in filteredDyTitleResults"
         v-bind:key="index"
         @click="selectedItem=item"
       >
@@ -61,16 +71,18 @@ import postCommentBar from "./postCommentBar.vue";
 
 import modalWindow from "./modal.vue";
 
+import searchByTitleMixin from "../assets/js/searchByTitleMixin.js";
+
 export default {
   data() {
     return {
-      searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
       errorMessages: [],
       errorMessageIsVisible: false
     };
   },
+  mixins: [searchByTitleMixin],
   methods: {
     testMethod: function(value) {
       console.log("test method");
@@ -121,7 +133,7 @@ export default {
     showErrorMessage: function(errors = []) {
       this.errorMessages = errors;
       this.errorMessageIsVisible = true;
-      
+
       setTimeout(() => {
         this.errorMessageIsVisible = false;
       }, 4000);
@@ -167,9 +179,10 @@ export default {
   font-style: italic;
 }
 
-/* .search-result__body {
-  width: 100%;
-} */
+.get-results-box {
+  display: flex;
+  justify-content: space-around;
+}
 
 textarea {
   width: 100%;

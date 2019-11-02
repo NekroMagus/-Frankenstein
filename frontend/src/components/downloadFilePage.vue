@@ -2,6 +2,7 @@
   <div>
     <h2>download file</h2>
     <button @click="downloadFile">download file</button>
+    <a href="http://localhost:3000/downloadFiles">dowload</a>
   </div>
 </template>
 

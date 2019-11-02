@@ -16,7 +16,9 @@ app.use(session({ secret: 'passport-tutorial', cookie: { maxAge: 60 * 60 * 1000 
 
 const server = app.listen(3000, () => {
     let port = server.address().port;
-    console.log("http://localhost:" + port + "/users");
-    console.log('http://localhost:' + port + '/db');
-    console.log('http://localhost:' + port + '/registration');
+    const local = 'http://localhost:';
+    console.log(local + port + "/users");
+    console.log(local + port + '/db');
+    console.log(local + port + '/registration');
+    console.log(local + port + '/downloadFiles');
 });

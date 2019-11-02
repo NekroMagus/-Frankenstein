@@ -6,7 +6,7 @@ export default {
     };
   },
   computed: {
-    filteredDyTitleResults() {
+    filteredByTitleResults() {
       return this.searchedResult.filter(item => {
         return item.title.indexOf(this.searchTitle) !== -1;
       });

@@ -38,7 +38,7 @@
     <div class="search-result">
       <div
         class="search-result__item rounded"
-        v-for="(item, index) in filteredDyTitleResults"
+        v-for="(item, index) in filteredByTitleResults"
         v-bind:key="index"
         @click="selectedItem=item"
       >

@@ -34,10 +34,6 @@ export default {
   },
   components: {
     sectionHeader
-  },
-  mounted() {
-    console.log(this.$router);
-    
   }
 };
 </script>

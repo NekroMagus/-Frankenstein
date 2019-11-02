@@ -8,11 +8,22 @@
 
 <script>
 export default {
+  data() {
+    return {
+      response: {}
+    };
+  },
   methods: {
     downloadFile() {
-      axios.get("http://localhost:3000/downloadFiles").then(response => {
-        console.log(response);
-      });
+      axios
+        .get("http://localhost:3000/downloadFiles", { responseType: "blob" })
+        .then(response => {
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(response.data);
+          link.download = "Download.md";
+          link.click();
+          console.log(response);
+        });
     }
   }
 };

@@ -1,12 +1,37 @@
 <template>
   <div class="form-box">
-    <div class="form">
+    <div class="form" @input="checkErrors">
       <label class="form__label" for>Почта:</label>
-      <input type="email" v-model="email" size="16" maxlength="16" placeholder="name@email.com" />
+      <input
+        type="email"
+        v-model="email"
+        size="16"
+        maxlength="16"
+        placeholder="name@email.com"
+        @blur="$v.email.$touch"
+        :class="{'validation-error': $v.email.$error}"
+      />
+
       <label class="form__label" for>Пароль:</label>
-      <input type="password" v-model="password" size="16" maxlength="16" />
+      <input
+        type="password"
+        v-model="password"
+        size="16"
+        maxlength="16"
+        @blur="$v.password.$touch"
+        :class="{'validation-error': $v.password.$error}"
+      />
+
       <label class="form__label" for>Повторите пароль:</label>
-      <input type="password" v-model="repeatPassword" size="16" maxlength="16" />
+      <input
+        type="password"
+        v-model="confirmPassword"
+        size="16"
+        maxlength="16"
+        @blur="$v.confirmPassword.$touch"
+        :class="{'validation-error': $v.confirmPassword.$error}"
+      />
+
       <input
         class="form__submit"
         type="submit"
@@ -18,48 +43,65 @@
 </template>
 
 <script>
-import RegistryValidator from "../assets/js/registryValidator.js";
+import { email, required, minLength, sameAs } from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      repeatPassword: ""
+      confirmPassword: "",
+      errorList: []
     };
   },
+  validations: {
+    email: {
+      required,
+      email,
+      minLength: minLength(5)
+    },
+    password: {
+      required,
+      minLength: minLength(5)
+    },
+    confirmPassword: {
+      sameAs: sameAs("password")
+    }
+  },
+  mounted() {
+    this.checkErrors();
+  },
   methods: {
-    isValidData: function() {
-      if (!RegistryValidator.isValidEmail(this.email)) {
-        return false;
-      }
-      if (!RegistryValidator.isValidPassword(this.password)) {
-        return false;
-      }
-      if (
-        !RegistryValidator.isValidRepeatPassword(
-          this.password,
-          this.repeatPassword
-        )
-      ) {
-        return false;
-      }
-      return true;
+    checkErrors() {
+      let errors = [];
+      if (!this.$v.email.required) errors.push("Введите почту");
+      if (!this.$v.email.email) errors.push("Почта введена не корректно");
+      if (!this.$v.email.minLength)
+        errors.push(`Почта должна быть не менее ${5} символов`);
+      if (!this.$v.password.required) errors.push(`Введите пароль`);
+      if (!this.$v.password.minLength)
+        errors.push(`Пароль должен быть не менее ${5} символов`);
+      if (!this.$v.confirmPassword.sameAs)
+        errors.push(`Повторный пароль не совпадает`);
+
+      this.errorList = errors;
+      console.log(this.errorList);
     },
     submitRegistration: function() {
-      if (this.isValidData()) {
-        this.$emit("submitRegistrationWithEmail", {
-          user: { email: this.email, password: this.password }
+      if (this.errorList.length === 0) {
+        this.$emit("submitregistration", {
+          email: this.email,
+          password: this.password
         });
       } else {
-        this.$emit("error", RegistryValidator.errors);
+        this.$emit("error", this.errorList);
       }
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 .form-box {
   display: flex;
   justify-content: center;
@@ -80,5 +122,9 @@ export default {
 
 .form__submit {
   margin: 20px 0 5px;
+}
+
+.validation-error {
+  border: 2px solid red;
 }
 </style>

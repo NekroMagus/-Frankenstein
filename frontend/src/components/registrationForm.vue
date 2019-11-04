@@ -86,7 +86,6 @@ export default {
       console.log(this.errorList);
     },
     submitRegistration: function() {
-
     if (this.errorList.length === 0) {
         this.$emit("submitregistration", {
           login: this.login,

@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import registrationForm from "./registrationForm.vue";
-import registrationFormWithEmail from "./registrationFormWithEmail.vue";
-import authorizationForm from "./authorizationForm.vue";
-import sectionShowUsersAccounts from "./sectionShowUsersAccounts";
+import registrationForm from "../components/registrationForm.vue";
+import registrationFormWithEmail from "../components/registrationFormWithEmail.vue";
+import authorizationForm from "../components/authorizationForm.vue";
+import sectionShowUsersAccounts from "../components/sectionShowUsersAccounts";
 
 
 export default {

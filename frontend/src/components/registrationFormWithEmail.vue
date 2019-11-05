@@ -58,7 +58,10 @@ export default {
     email: {
       required,
       email,
-      minLength: minLength(5)
+      minLength: minLength(5),
+      onlyLetterFirst() {
+        return true;
+      }
     },
     password: {
       required,

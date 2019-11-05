@@ -66,10 +66,10 @@
 </template>
 
 <script>
-import searchNumberBar from "./searchNumberBar.vue";
-import postCommentBar from "./postCommentBar.vue";
+import searchNumberBar from "../components/searchNumberBar.vue";
+import postCommentBar from "../components/postCommentBar.vue";
 
-import modalWindow from "./modal.vue";
+import modalWindow from "../components/modal.vue";
 
 import searchByTitleMixin from "../assets/js/searchByTitleMixin.js";
 

@@ -1,12 +1,16 @@
 <template>
   <div>
     <div class="form-box">
-      <registration-form v-on:submitregistration="submitRegistration" v-on:error="showErrorMessage"></registration-form>
+      <!-- <registration-form v-on:submitregistration="submitRegistration" v-on:error="showErrorMessage"></registration-form>
       <registration-form-with-email
         v-on:submitRegistrationWithEmail="submitRegistrationWithEmail"
         v-on:error="showErrorMessage"
       ></registration-form-with-email>
-      <authorization-form v-on:submitAuthorization="submitAuthorization" v-on:error="showErrorMessage"></authorization-form>
+      <authorization-form v-on:submitAuthorization="submitAuthorization" v-on:error="showErrorMessage"></authorization-form> -->
+
+      <super-form mode='REG_LOGIN' @onsubmit="submitRegistration" @error="showErrorMessage"></super-form>
+      <super-form mode='REG_EMAIL' @onsubmit="submitRegistrationWithEmail" @error="showErrorMessage"></super-form>
+      <super-form mode='AUTH_EMAIL' @onsubmit="submitAuthorization" @error="showErrorMessage"></super-form>
     </div>
     <hr />
     <button @click="showAllUsers">show all users</button>
@@ -19,10 +23,12 @@
 </template>
 
 <script>
-import registrationForm from "../components/registrationForm.vue";
-import registrationFormWithEmail from "../components/registrationFormWithEmail.vue";
-import authorizationForm from "../components/authorizationForm.vue";
+// import registrationForm from "../components/registrationForm.vue";
+// import registrationFormWithEmail from "../components/registrationFormWithEmail.vue";
+// import authorizationForm from "../components/authorizationForm.vue";
 import sectionShowUsersAccounts from "../components/sectionShowUsersAccounts";
+
+import SuperForm from '../components/SuperForm.vue'
 
 
 export default {
@@ -119,10 +125,11 @@ export default {
     }
   },
   components: {
-    registrationForm,
-    registrationFormWithEmail,
-    authorizationForm,
-    sectionShowUsersAccounts
+    // registrationForm,
+    // registrationFormWithEmail,
+    // authorizationForm,
+    sectionShowUsersAccounts,
+    superForm: SuperForm
   }
 };
 </script>

@@ -1,14 +1,15 @@
 <template>
   <div class="form-box">
     <div class="form" @input="checkErrors">
-      <label class="form__label" for>Логин:</label>
+      <label class="form__label" for>Почта:</label>
       <input
-        type="text"
-        v-model="login"
+        type="email"
+        v-model="email"
         size="16"
         maxlength="16"
-        @blur="$v.login.$touch"
-        :class="{'validation-error': $v.login.$error}"
+        placeholder="name@email.com"
+        @blur="$v.email.$touch"
+        :class="{'validation-error': $v.email.$error}"
       />
 
       <label class="form__label" for>Пароль:</label>
@@ -42,21 +43,25 @@
 </template>
 
 <script>
-import { required, minLength, sameAs } from "vuelidate/lib/validators";
+import { email, required, minLength, sameAs } from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
-      login: "",
+      email: "",
       password: "",
       confirmPassword: "",
       errorList: []
     };
   },
   validations: {
-    login: {
+    email: {
       required,
-      minLength: minLength(5)
+      email,
+      minLength: minLength(5),
+      onlyLetterFirst() {
+        return true;
+      }
     },
     password: {
       required,
@@ -69,13 +74,13 @@ export default {
   mounted() {
     this.checkErrors();
   },
-
   methods: {
     checkErrors() {
       let errors = [];
-      if (!this.$v.login.required) errors.push("Введите логин");
-      if (!this.$v.login.minLength)
-        errors.push(`Логин должен быть не менее ${5} символов`);
+      if (!this.$v.email.required) errors.push("Введите почту");
+      if (!this.$v.email.email) errors.push("Почта введена не корректно");
+      if (!this.$v.email.minLength)
+        errors.push(`Почта должна быть не менее ${5} символов`);
       if (!this.$v.password.required) errors.push(`Введите пароль`);
       if (!this.$v.password.minLength)
         errors.push(`Пароль должен быть не менее ${5} символов`);
@@ -83,12 +88,11 @@ export default {
         errors.push(`Повторный пароль не совпадает`);
 
       this.errorList = errors;
-      console.log(this.errorList);
     },
     submitRegistration: function() {
-    if (this.errorList.length === 0) {
-        this.$emit("submitregistration", {
-          login: this.login,
+      if (this.errorList.length === 0) {
+        this.$emit("submitRegistrationWithEmail", {
+          email: this.email,
           password: this.password
         });
       } else {

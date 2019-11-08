@@ -1,6 +1,6 @@
 <template>
-  <div class="form-box">
-    <div class="form" @input="checkErrors">
+  <div class="form-box" @input="checkErrors">
+    <div class="form">
       <label class="form__label" for>Почта:</label>
       <input
         type="email"
@@ -22,35 +22,19 @@
         :class="{'validation-error': $v.password.$error}"
       />
 
-      <label class="form__label" for>Повторите пароль:</label>
-      <input
-        type="password"
-        v-model="confirmPassword"
-        size="16"
-        maxlength="16"
-        @blur="$v.confirmPassword.$touch"
-        :class="{'validation-error': $v.confirmPassword.$error}"
-      />
-
-      <input
-        class="form__submit"
-        type="submit"
-        @click="submitRegistration"
-        value="Зарегистрироваться"
-      />
+      <input class="form__submit" type="submit" @click="submitAuthorization" value="Авторизация" />
     </div>
   </div>
 </template>
 
 <script>
-import { email, required, minLength, sameAs } from "vuelidate/lib/validators";
+import { email, required, minLength } from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      confirmPassword: "",
       errorList: []
     };
   },
@@ -58,17 +42,11 @@ export default {
     email: {
       required,
       email,
-      minLength: minLength(5),
-      onlyLetterFirst() {
-        return true;
-      }
+      minLength: minLength(5)
     },
     password: {
       required,
       minLength: minLength(5)
-    },
-    confirmPassword: {
-      sameAs: sameAs("password")
     }
   },
   mounted() {
@@ -84,15 +62,12 @@ export default {
       if (!this.$v.password.required) errors.push(`Введите пароль`);
       if (!this.$v.password.minLength)
         errors.push(`Пароль должен быть не менее ${5} символов`);
-      if (!this.$v.confirmPassword.sameAs)
-        errors.push(`Повторный пароль не совпадает`);
 
       this.errorList = errors;
-      console.log(this.errorList);
     },
-    submitRegistration: function() {
+    submitAuthorization: function() {
       if (this.errorList.length === 0) {
-        this.$emit("submitregistration", {
+        this.$emit("submitAuthorization", {
           email: this.email,
           password: this.password
         });
@@ -104,7 +79,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .form-box {
   display: flex;
   justify-content: center;
@@ -130,4 +105,5 @@ export default {
 .validation-error {
   border: 2px solid red;
 }
+
 </style>

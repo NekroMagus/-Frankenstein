@@ -1,6 +1,5 @@
 <template>
   <div>
-    <hr />
     <post-comment-bar v-on:submitcomment="postComment" v-on:error="showErrorMessage"></post-comment-bar>
 
     <hr />
@@ -8,21 +7,38 @@
     <input type="submit" @click="getAllResults" value="search all users" />
 
     <hr />
-    <search-number-bar
-      v-on:mysubmit="getResultsByUserId"
-      placeholder="1"
-      btncaption="search by userId"
-    ></search-number-bar>
+    <div class="get-results-box">
+      <search-number-bar
+        v-on:mysubmit="getResultsByUserId"
+        v-on:error="showErrorMessage"
+        placeholder="1"
+        btncaption="search by userId"
+      ></search-number-bar>
+
+      <search-number-bar
+        v-on:mysubmit="getResultsById"
+        v-on:error="showErrorMessage"
+        placeholder="1"
+        btncaption="search by Id"
+      ></search-number-bar>
+    </div>
 
     <hr />
-    <search-number-bar v-on:mysubmit="getResultsById" placeholder="1" btncaption="search by Id"></search-number-bar>
+
+    <input
+      type="text"
+      v-model="searchTitle"
+      v-show="searchedResult.length > 0"
+      placeholder="search by title"
+    />
 
     <hr />
+
     <!-- show search result -->
     <div class="search-result">
       <div
         class="search-result__item rounded"
-        v-for="(item, index) in searchedResult"
+        v-for="(item, index) in filteredByTitleResults"
         v-bind:key="index"
         @click="selectedItem=item"
       >
@@ -45,7 +61,7 @@
       :visibility="isVisibleModalEdit"
     ></modal-window>
 
-    <modal-message :visibility="isVisibleModalMessage" :messages="errorMessages"></modal-message>
+    <modal-message :visibility="errorMessageIsVisible" :messages="errorMessages"></modal-message>
   </div>
 </template>
 
@@ -54,31 +70,32 @@ import searchNumberBar from "./searchNumberBar.vue";
 import postCommentBar from "./postCommentBar.vue";
 
 import modalWindow from "./modal.vue";
-import modalMessage from "./modalMessage";
+
+import searchByTitleMixin from "../assets/js/searchByTitleMixin.js";
 
 export default {
   data() {
     return {
-      searchedResult: [],
       selectedItem: {},
       isVisibleModalEdit: false,
-      isVisibleModalMessage: true,
-      errorMessages: []
+      errorMessages: [],
+      errorMessageIsVisible: false
     };
   },
+  mixins: [searchByTitleMixin],
   methods: {
     testMethod: function(value) {
       console.log("test method");
       console.log(value);
     },
     getAllResults: function() {
-      axios.get("http://localhost:3000/db").then(response => {
+      axios.get("http://localhost:3000/users").then(response => {
         this.searchedResult = response.data;
       });
     },
     getResultsById: function(id) {
       axios
-        .get("http://localhost:3000/db", {
+        .get("http://localhost:3000/users", {
           params: { id: id }
         })
         .then(response => {
@@ -87,7 +104,7 @@ export default {
     },
     getResultsByUserId: function(id) {
       axios
-        .get("http://localhost:3000/db", {
+        .get("http://localhost:3000/users", {
           params: { userId: id }
         })
         .then(response => {
@@ -95,20 +112,18 @@ export default {
         });
     },
     postComment: function(obj) {
-      let thisObj = this;
-
       axios
-        .post("http://localhost:3000/db", obj)
+        .post("http://localhost:3000/users", obj)
         .then(response => {
           console.log("response");
         })
-        .catch(function(error) {
-          // thisObj.errorMessages = "ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!";
+        .catch(error => {
+          this.errorMessages.push("ТАКОЙ ЗАГОЛОВОК УЖЕ СУЩЕСТВУЕТ!");
         });
     },
     deleteComment: function(ind) {
       axios
-        .delete("http://localhost:3000/db", {
+        .delete("http://localhost:3000/users", {
           params: { id: ind }
         })
         .then(response => {
@@ -116,23 +131,19 @@ export default {
         });
     },
     showErrorMessage: function(errors = []) {
-      let thisObj = this;
-
       this.errorMessages = errors;
-      this.isVisibleModalMessage = true;
+      this.errorMessageIsVisible = true;
 
       setTimeout(() => {
-        thisObj.isVisibleModalMessage = false;
-        thisObj.errorMessages = [];
-      }, 2000);
+        this.errorMessageIsVisible = false;
+      }, 4000);
     }
   },
   watch: {},
   components: {
     searchNumberBar,
     postCommentBar,
-    modalWindow,
-    modalMessage
+    modalWindow
   }
 };
 </script>
@@ -168,9 +179,10 @@ export default {
   font-style: italic;
 }
 
-/* .search-result__body {
-  width: 100%;
-} */
+.get-results-box {
+  display: flex;
+  justify-content: space-around;
+}
 
 textarea {
   width: 100%;

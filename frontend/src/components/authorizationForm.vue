@@ -1,18 +1,11 @@
 <template>
   <div class="form-box">
     <div class="form">
-      <label class="form__label" for>Логин:</label>
-      <input type="text" v-model="login" size="16" maxlength="16" />
+      <label class="form__label" for>Почта:</label>
+      <input type="email" v-model="email" size="16" maxlength="16" placeholder="name@email.com" />
       <label class="form__label" for>Пароль:</label>
       <input type="password" v-model="password" size="16" maxlength="16" />
-      <label class="form__label" for>Повторите пароль:</label>
-      <input type="password" v-model="repeatPassword" size="16" maxlength="16" />
-      <input
-        class="form__submit"
-        type="submit"
-        @click="submitRegistration"
-        value="Зарегистрироваться"
-      />
+      <input class="form__submit" type="submit" @click="submitAuthorization" value="Авторизация" />
     </div>
   </div>
 </template>
@@ -23,35 +16,26 @@ import RegistryValidator from "../assets/js/registryValidator.js";
 export default {
   data() {
     return {
-      login: "",
+      email: "",
       password: "",
-      repeatPassword: ""
     };
   },
   methods: {
     isValidData: function() {
-      if (!RegistryValidator.isValidLogin(this.login)) {
+      if (!RegistryValidator.isValidEmail(this.email)) {
         return false;
       }
       if (!RegistryValidator.isValidPassword(this.password)) {
         return false;
       }
-      if (
-        !RegistryValidator.isValidRepeatPassword(
-          this.password,
-          this.repeatPassword
-        )
-      ) {
-        return false;
-      }
+      
       return true;
     },
-    submitRegistration: function() {
+    submitAuthorization: function() {
       if (this.isValidData()) {
-        this.$emit("submitregistration", {
-          login: this.login,
-          password: this.password
-        });
+      this.$emit("submitAuthorization", {
+        user: { email: this.email, password: this.password }
+      });
       } else {
         this.$emit("error", RegistryValidator.errors);
       }
